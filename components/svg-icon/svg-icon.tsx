@@ -2,26 +2,22 @@ import React, { FC, ReactEventHandler } from "react";
 import { TLASvg } from "./svg.enum";
 import { TLAIcons } from "@/assets/icons";
 import { Text, View } from "react-native";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 type Props = {
   svg: keyof typeof TLASvg;
   rotate?: number;
   variant?: "normal" | "inverted";
   size?: number;
-  sizeX?: string | number;
-  sizeY?: string | number;
+  width?: string | number;
+  height?: string | number;
   color?: string;
   fill?: string;
   stroke?: string;
-  onClick?: ReactEventHandler;
-  className?: string;
 };
 
-export const SvgIcon: FC<Props> = (props) => {
+export const SvgIcon: FC<Props> = ({ svg, variant, size, width, height, rotate, fill, stroke, color }) => {
   // Change color to use theme
-  //   const theme = useTheme();
-
-  const { svg, variant, size, sizeX, sizeY, rotate, fill, stroke, color, onClick, className } = props;
 
   if (!svg) {
     return null;
@@ -38,8 +34,8 @@ export const SvgIcon: FC<Props> = (props) => {
   }
 
   const svgStyles = {
-    width: size || sizeX,
-    height: size || sizeY,
+    width: size || width,
+    height: size || height,
     fill: fill,
     stroke: stroke,
     color: color,
