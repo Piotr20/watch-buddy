@@ -18,7 +18,7 @@ export function ThemedText({ style, type = "base", bold = false, underline, ...r
     },
     title: {
       fontSize: 32,
-      fontWeight: "700",
+      fontWeight: 700,
       lineHeight: 38.4,
       color: colors.text.heading,
     },
@@ -38,6 +38,7 @@ export function ThemedText({ style, type = "base", bold = false, underline, ...r
   return (
     <Text
       style={[
+        { fontFamily: "Rubik-Regular" },
         type === "base" && styles.default,
         type === "title" && styles.title,
         type === "label" && styles.label,

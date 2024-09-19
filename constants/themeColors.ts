@@ -66,7 +66,7 @@ export const ThemeColors = {
       danger: colors["red-400"],
     },
     background: {
-      base: colors.black,
+      base: colors["grey-950"],
       secondary: colors["grey-900"],
       "secondary-pressed": colors["grey-800"],
       "secondary-selected": colors["yellow-400"],
