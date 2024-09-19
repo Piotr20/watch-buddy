@@ -1,4 +1,4 @@
-import { Text, type TextProps, StyleSheet } from "react-native";
+import { Text, type TextProps, StyleSheet, StyleProp, TextStyle } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
 export type ThemedTextProps = TextProps & {
@@ -11,7 +11,7 @@ export function ThemedText({ style, type = "base", bold = false, underline, ...r
   const colors = useThemeColor();
 
   const styles = StyleSheet.create({
-    default: {
+    base: {
       fontSize: 16,
       lineHeight: 19.2,
       color: colors.text.base,
@@ -35,17 +35,5 @@ export function ThemedText({ style, type = "base", bold = false, underline, ...r
     },
   });
 
-  return (
-    <Text
-      style={[
-        { fontFamily: "Rubik-Regular" },
-        type === "base" && styles.default,
-        type === "title" && styles.title,
-        type === "label" && styles.label,
-        type === "link" && styles.link,
-        style,
-      ]}
-      {...rest}
-    />
-  );
+  return <Text style={{ fontFamily: "Rubik-Regular", ...styles[type], ...(style as TextStyle) }} {...rest} />;
 }
