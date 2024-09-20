@@ -31,7 +31,7 @@ export default function Root({ children }: PropsWithChildren) {
 const responsiveBackground = `
 body {
   background-color: #fff;
-  font-family: Rubik-Regular, sans-serif;
+  font-family: Rubik, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   body {
