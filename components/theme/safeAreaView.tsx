@@ -4,8 +4,8 @@ import { SafeAreaViewProps } from "react-native-safe-area-context";
 
 type Props = SafeAreaViewProps & {};
 
-export function ThemeSafeAreaView({ style, ...otherProps }: Props) {
+export function ThemeSafeAreaView({ style, ...rest }: Props) {
   const colors = useThemeColor();
 
-  return <SafeAreaView style={[{ backgroundColor: colors.background.base }, style]} {...otherProps} />;
+  return <SafeAreaView style={[{ backgroundColor: colors.background.base }, style]} {...rest} />;
 }

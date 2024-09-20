@@ -4,8 +4,8 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 
 type Props = ViewProps & {};
 
-export function ThemeView({ style, ...otherProps }: Props) {
+export function ThemeView({ style, ...rest }: Props) {
   const colors = useThemeColor();
 
-  return <View style={[{ backgroundColor: colors.background.base }, style]} {...otherProps} />;
+  return <View style={[{ backgroundColor: colors.background.base }, style]} {...rest} />;
 }
