@@ -2,7 +2,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { PropsWithChildren, useState } from "react";
 import { StyleSheet, TouchableOpacity, useColorScheme } from "react-native";
 
-import { ThemedView } from "@/components/ThemedView";
+import { ThemeView } from "@/components/theme";
 import { useTheme } from "@react-navigation/native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemeTitle } from "./theme/typography";
@@ -12,7 +12,7 @@ export function Collapsible({ children, title }: PropsWithChildren & { title: st
   const colors = useThemeColor();
 
   return (
-    <ThemedView>
+    <ThemeView>
       <TouchableOpacity
         style={styles.heading}
         onPress={() => setIsOpen((value) => !value)}
@@ -25,8 +25,8 @@ export function Collapsible({ children, title }: PropsWithChildren & { title: st
         />
         <ThemeTitle>{title}</ThemeTitle>
       </TouchableOpacity>
-      {isOpen && <ThemedView style={styles.content}>{children}</ThemedView>}
-    </ThemedView>
+      {isOpen && <ThemeView style={styles.content}>{children}</ThemeView>}
+    </ThemeView>
   );
 }
 

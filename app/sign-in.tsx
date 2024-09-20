@@ -1,7 +1,7 @@
 import { useSession } from "@/components/AuthProvider";
 import { ThemePressable } from "@/components/theme/ThemePressable";
 import { ThemeTitle } from "@/components/theme/typography";
-import { ThemedView } from "@/components/ThemedView";
+import { ThemeView } from "@/components/theme";
 import { router } from "expo-router";
 import { Button, Pressable, SafeAreaView, TextInput, TouchableHighlight } from "react-native";
 
@@ -9,7 +9,7 @@ export default function SignIn() {
   const { signIn } = useSession();
 
   return (
-    <ThemedView style={{ flex: 1 }}>
+    <ThemeView style={{ flex: 1 }}>
       <SafeAreaView>
         <ThemeTitle
           style={{
@@ -20,9 +20,9 @@ export default function SignIn() {
         >
           Sign In
         </ThemeTitle>
-        <ThemedView>
+        <ThemeView>
           <TextInput textContentType="emailAddress" />
-        </ThemedView>
+        </ThemeView>
         <ThemePressable
           onPress={() => {
             signIn();
@@ -34,6 +34,6 @@ export default function SignIn() {
           Sign In
         </ThemePressable>
       </SafeAreaView>
-    </ThemedView>
+    </ThemeView>
   );
 }
