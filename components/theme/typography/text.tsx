@@ -7,7 +7,7 @@ type Props = TextProps & {
   underline?: false;
 };
 
-export function ThemeText({ style, size = "base", bold = true, underline, ...rest }: Props) {
+export function ThemeText({ style, size = "base", bold = false, underline, ...rest }: Props) {
   const colors = useThemeColor();
 
   const styles = StyleSheet.create({
@@ -34,7 +34,7 @@ export function ThemeText({ style, size = "base", bold = true, underline, ...res
     <Text
       style={{
         fontFamily: "Rubik",
-        color: colors.text.heading,
+        color: colors.text.base,
         textDecorationLine: underline ? "underline" : "none",
         ...styles[size],
         ...(style as TextStyle),

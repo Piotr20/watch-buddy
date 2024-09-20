@@ -3,4 +3,5 @@
 
 export enum TLASvg {
     arc3d = 'arc3d',
+    close24 = 'close24',
 }
