@@ -1,7 +1,7 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Pressable, PressableProps, StyleSheet } from "react-native";
-import { ThemedText } from "./ThemedText";
 import { ReactNode } from "react";
+import { ThemeText } from "./typography";
 
 export type ThemedButtonProps = PressableProps & {
   type?: "base" | "primary" | "secondary" | "danger";
@@ -38,7 +38,7 @@ export function ThemePressable({ style, children, type = "base", ...rest }: Them
 
   return (
     <Pressable style={{ ...styles[type], ...(style as PressableProps) }} {...rest}>
-      <ThemedText>{children}</ThemedText>
+      <ThemeText>{children}</ThemeText>
     </Pressable>
   );
 }

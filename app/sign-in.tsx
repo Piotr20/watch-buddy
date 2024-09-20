@@ -1,6 +1,6 @@
 import { useSession } from "@/components/AuthProvider";
-import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemePressable } from "@/components/theme/ThemePressable";
+import { ThemeTitle } from "@/components/theme/typography";
 import { ThemedView } from "@/components/ThemedView";
 import { router } from "expo-router";
 import { Button, Pressable, SafeAreaView, TextInput, TouchableHighlight } from "react-native";
@@ -11,16 +11,15 @@ export default function SignIn() {
   return (
     <ThemedView style={{ flex: 1 }}>
       <SafeAreaView>
-        <ThemedText
+        <ThemeTitle
           style={{
             marginLeft: "auto",
             marginRight: "auto",
             marginTop: 64,
           }}
-          type="title"
         >
           Sign In
-        </ThemedText>
+        </ThemeTitle>
         <ThemedView>
           <TextInput textContentType="emailAddress" />
         </ThemedView>
