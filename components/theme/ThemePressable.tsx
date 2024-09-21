@@ -27,14 +27,16 @@ export function ThemePressable({ type = 'base', children, disabled, style, ...re
     secondary: {
       backgroundColor: !isPressed ? 'transparent' : colors.background['secondary-pressed'],
       borderWidth: 1,
-      borderColor: colors.border.inverse,
+      borderColor: !isPressed ? colors.border.inverse : colors.border.base,
       borderStyle: 'solid',
     },
     icon: {
       backgroundColor: !isPressed ? 'transparent' : colors.background['secondary-pressed'],
       color: colors.text.base,
+      padding: 10,
       textAlign: 'center',
       justifyContent: 'center',
+      borderRadius: 12,
       width: 'auto',
       height: 'auto',
       alignSelf: 'flex-start',
@@ -50,7 +52,7 @@ export function ThemePressable({ type = 'base', children, disabled, style, ...re
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
       style={[
-        buttonStyles.common,
+        (type === 'base' || type === 'secondary') && buttonStyles.common,
         buttonStyles[type],
         disabled && buttonStyles.disabled,
         style as ViewStyle,
