@@ -1,9 +1,9 @@
-import { SvgIcon } from "@/components/svg-icon";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { ThemeText, ThemeTitle } from "@/components/theme/typography";
-import { ThemeSafeAreaView, ThemeTextInput } from "@/components/theme";
-import { SafeAreaView } from "react-native";
-import { ThemePressable } from "@/components/theme/ThemePressable";
+import { SvgIcon } from '@/components/svg-icon';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { ThemeText, ThemeTitle } from '@/components/theme/typography';
+import { ThemeSafeAreaView, ThemeTextInput } from '@/components/theme';
+import { SafeAreaView } from 'react-native';
+import { ThemePressable } from '@/components/theme/ThemePressable';
 
 export default function Home() {
   const colors = useThemeColor();
@@ -17,10 +17,10 @@ export default function Home() {
       <ThemeTitle size="5xl">Title test</ThemeTitle>
       <ThemeText size="base">Default test</ThemeText>
 
-      <ThemePressable type="default" state="default">Default Button</ThemePressable>
-      <ThemePressable type="secondary" state="default">Secondary Button</ThemePressable>
-      <ThemePressable type="icon" state="default" >
-        <SvgIcon svg='close24' size={24} color={colors.text.base}></SvgIcon>
+      <ThemePressable>Default Button</ThemePressable>
+      <ThemePressable type="secondary">Secondary Button</ThemePressable>
+      <ThemePressable type="icon">
+        <SvgIcon svg="close24" size={24} color={colors.text.base}></SvgIcon>
       </ThemePressable>
 
       {/* <SvgIcon svg="arc3d" stroke="red" /> */}

@@ -1,91 +1,74 @@
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { Pressable, PressableProps, Animated, StyleSheet } from "react-native";
-import { SvgIcon } from "../svg-icon";
-import { ReactNode } from "react";
-import { ThemeText } from "./typography";
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { ReactNode, useState, useCallback } from 'react';
+import { Pressable, PressableProps, StyleSheet, ViewStyle } from 'react-native';
+import { ThemeText } from './typography';
 
-export type ThemedButtonProps = PressableProps & {
-  type?: "default" | "secondary" | "icon";
-  state?: "default" | "pressed" | "disabled";
+type Props = PressableProps & {
+  type?: 'base' | 'secondary' | 'icon';
   children: ReactNode;
 };
 
-export function ThemePressable({ onPress, style, children, type = "default", state = "default", ...rest }: ThemedButtonProps) {
+export function ThemePressable({ type = 'base', children, disabled, style, ...rest }: Props) {
+  const [isPressed, setIsPressed] = useState<boolean>(false);
   const colors = useThemeColor();
 
-   // Base styles that are common to all buttons
-  const baseStyle = {
-    paddingVertical: type == "icon" ? 10 : 14,
-    paddingHorizontal: type == "icon" ? 10 : 20,
-    borderRadius: type == "icon" ? 12 : 16,
-    width: type == "icon" ? 'fit-content' : '100%',
-    height: 'auto',
-  };
-
-  // Styles specific to each type of button
-  const typeStyles = {
-    default: {
-      backgroundColor: colors.background.inverse,
-      color: colors.text.warning,
+  const buttonStyles = StyleSheet.create({
+    common: {
+      paddingVertical: 14,
+      paddingHorizontal: 20,
+      borderRadius: 16,
+      width: '100%',
+    },
+    base: {
+      backgroundColor: !isPressed
+        ? colors.background.inverse
+        : colors.background['inverse-pressed'],
     },
     secondary: {
-      backgroundColor: "transparent",
+      backgroundColor: !isPressed ? 'transparent' : colors.background['secondary-pressed'],
       borderWidth: 1,
       borderColor: colors.border.inverse,
       borderStyle: 'solid',
     },
     icon: {
-      backgroundColor: 'transparent',
+      backgroundColor: !isPressed ? 'transparent' : colors.background['secondary-pressed'],
       color: colors.text.base,
       textAlign: 'center',
       justifyContent: 'center',
-    },
-  };
-
-  //State styles
-  const stateStyles = {
-    pressed: {
-      default: {
-        backgroundColor: colors.background["inverse-pressed"],
-      },
-      secondary: {
-        backgroundColor: colors.background["secondary-pressed"],
-      },
-      icon: {
-        backgroundColor: colors.background["secondary-pressed"],
-      },
+      width: 'auto',
+      height: 'auto',
+      alignSelf: 'flex-start',
     },
     disabled: {
-        backgroundColor: colors.background.disabled,
-        color: colors.text.disabled,
+      backgroundColor: colors.background.disabled,
+      color: colors.text.disabled,
     },
-  };
-
-  const buttonStyles = StyleSheet.create({
-    button: {
-      ...baseStyle,
-      ...(typeStyles[type] || {}),
-
-      // Handle pressed state
-      ...(state === "pressed" && type === "default" ? stateStyles.pressed.default : {}),
-      ...(state === "pressed" && type === "secondary" ? stateStyles.pressed.secondary : {}),
-      ...(state === "pressed" && type === "icon" ? stateStyles.pressed.icon : {}),
-
-      // Handle disabled state
-      ...(state === "disabled" ? stateStyles.disabled : {}),
-    },
-    text: {
-      textAlign: 'center',
-    }
   });
 
   return (
-    <Pressable 
-      style={{ ...buttonStyles.button, ...(style as PressableProps) }} 
+    <Pressable
+      onPressIn={() => setIsPressed(true)}
+      onPressOut={() => setIsPressed(false)}
+      style={[
+        buttonStyles.common,
+        buttonStyles[type],
+        disabled && buttonStyles.disabled,
+        style as ViewStyle,
+      ]}
       {...rest}
-      onPress={onPress}
     >
-      <ThemeText style={buttonStyles.text}>{children}</ThemeText>
+      {type === 'icon' ? (
+        children
+      ) : (
+        <ThemeText
+          style={{
+            textAlign: 'center',
+            color: type === 'secondary' ? colors.text.base : colors.text.inverse,
+          }}
+        >
+          {children}
+        </ThemeText>
+      )}
     </Pressable>
   );
 }

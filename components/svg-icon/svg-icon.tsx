@@ -1,13 +1,13 @@
-import React, { FC, ReactEventHandler } from "react";
-import { TLASvg } from "./svg.enum";
-import { TLAIcons } from "@/assets/icons";
-import { Text, View } from "react-native";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import React, { FC, ReactEventHandler } from 'react';
+import { TLASvg } from './svg.enum';
+import { TLAIcons } from '@/assets/icons';
+import { Text, View } from 'react-native';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 type Props = {
   svg: keyof typeof TLASvg;
   rotate?: number;
-  variant?: "normal" | "inverted";
+  variant?: 'normal' | 'inverted';
   size?: number;
   width?: string | number;
   height?: string | number;
@@ -16,7 +16,17 @@ type Props = {
   stroke?: string;
 };
 
-export const SvgIcon: FC<Props> = ({ svg, variant, size, width, height, rotate, fill, stroke, color }) => {
+export const SvgIcon: FC<Props> = ({
+  svg,
+  variant,
+  size,
+  width,
+  height,
+  rotate,
+  fill,
+  stroke,
+  color,
+}) => {
   // Change color to use theme
 
   if (!svg) {
@@ -44,9 +54,9 @@ export const SvgIcon: FC<Props> = ({ svg, variant, size, width, height, rotate, 
           transform: `rotate(${rotate}deg)`,
         }
       : {}),
-    ...(variant === "inverted"
+    ...(variant === 'inverted'
       ? {
-          filter: "invert(1)",
+          filter: 'invert(1)',
         }
       : {}),
   };
@@ -59,7 +69,15 @@ export const SvgIcon: FC<Props> = ({ svg, variant, size, width, height, rotate, 
   // The simple fix is to wrap it in a span tag, by doing this the translate feature doesn't translate the svg by a mistake
   return (
     // Do not delete this span, read above
-    <View>
+    <View
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: size || (typeof width === 'number' ? width : parseInt(width || '0')),
+        height: size || (typeof height === 'number' ? height : parseInt(height || '0')),
+      }}
+    >
       <SvgFromMap style={svgStyles} />
     </View>
   );
