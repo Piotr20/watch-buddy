@@ -3,9 +3,9 @@
 
 import { FC } from 'react';
 import Arc3d from './arc3d.svg';
-import Close24 from './close24.svg';
+import Close from './close.svg';
 
 export const TLAIcons: { [key: string]: FC<any> } = {
     arc3d: Arc3d,
-    close24: Close24,
+    close: Close,
 }

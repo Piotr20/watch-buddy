@@ -20,7 +20,7 @@ export default function Home() {
       <ThemePressable>Default Button</ThemePressable>
       <ThemePressable type="secondary">Secondary Button</ThemePressable>
       <ThemePressable type="icon">
-        <SvgIcon svg="close24" size={24} color={colors.text.base}></SvgIcon>
+        <SvgIcon svg="close" size={24} color={colors.text.warning}></SvgIcon>
       </ThemePressable>
 
       {/* <SvgIcon svg="arc3d" stroke="red" /> */}
