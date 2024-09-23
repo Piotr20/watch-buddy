@@ -3,9 +3,31 @@
 
 import { FC } from 'react';
 import Arc3d from './arc3d.svg';
+import Check from './check.svg';
+import Checkcircle from './checkCircle.svg';
+import Chevronleft from './chevronLeft.svg';
+import Cinema from './cinema.svg';
 import Close from './close.svg';
+import Info from './info.svg';
+import Party from './party.svg';
+import Play from './play.svg';
+import Plus from './plus.svg';
+import Search from './search.svg';
+import Tv from './tv.svg';
+import User from './user.svg';
 
 export const TLAIcons: { [key: string]: FC<any> } = {
     arc3d: Arc3d,
+    check: Check,
+    checkcircle: Checkcircle,
+    chevronleft: Chevronleft,
+    cinema: Cinema,
     close: Close,
+    info: Info,
+    party: Party,
+    play: Play,
+    plus: Plus,
+    search: Search,
+    tv: Tv,
+    user: User,
 }

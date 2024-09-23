@@ -3,5 +3,16 @@
 
 export enum TLASvg {
     arc3d = 'arc3d',
-    close24 = 'close24',
+    check = 'check',
+    checkcircle = 'checkcircle',
+    chevronleft = 'chevronleft',
+    cinema = 'cinema',
+    close = 'close',
+    info = 'info',
+    party = 'party',
+    play = 'play',
+    plus = 'plus',
+    search = 'search',
+    tv = 'tv',
+    user = 'user',
 }
