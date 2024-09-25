@@ -1,17 +1,10 @@
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { useState } from 'react';
-import {
-  Image,
-  Pressable,
-  PressableProps,
-  StyleSheet,
-  ViewStyle,
-  useColorScheme,
-} from 'react-native';
+import { Pressable, PressableProps, StyleSheet, ViewStyle, useColorScheme } from 'react-native';
+import { AppleIcon, FacebookIcon, GoogleIcon } from '../icons/';
 
 type Props = PressableProps & {
   provider?: 'google' | 'facebook' | 'apple';
-  //children: ReactNode;
 };
 
 export function ThemeSoMePressable({ provider = 'google', style, ...rest }: Props) {
@@ -28,18 +21,17 @@ export function ThemeSoMePressable({ provider = 'google', style, ...rest }: Prop
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'flex-start',
-      backgroundColor: theme === 'light' ? '' : colors.background.base,
-    },
-    commonDarkMode: {
-      backgroundColor: !isPressed ? '#ffffff' : '#E0E0E9',
-      borderWidth: 1,
-      borderColor: !isPressed ? '#E0E0E9' : colors.border.base,
-      borderStyle: 'solid',
+      ...(theme === 'dark' && { 
+        backgroundColor: !isPressed ? colors.background.inverse : colors.background['inverse-pressed'],
+        borderWidth: 1,
+        borderColor: colors.border.inverse,
+        borderStyle: 'solid',
+      }),
     },
     google: {
-      backgroundColor: !isPressed ? '#ffffff' : '#E0E0E9',
+      backgroundColor: !isPressed ? colors.background.base : colors.background['inverse-pressed'],
       borderWidth: 1,
-      borderColor: '#E0E0E9',
+      borderColor: colors.border.base,
       borderStyle: 'solid',
     },
     apple: {
@@ -48,59 +40,27 @@ export function ThemeSoMePressable({ provider = 'google', style, ...rest }: Prop
     facebook: {
       backgroundColor: !isPressed ? '#1877F2' : '#3A8BF4',
     },
-    logo: {
-      height: 24,
-      width: 24,
-    },
-    appleLogo: {
-      height: 24,
-      width: 20.22,
-    },
   });
-
-  const getProviderLogo = () => {
-    const logos = {
-      apple: {
-        light: require('@/assets/images/soMe-logo/apple-logo-light.png'),
-        dark: require('@/assets/images/soMe-logo/apple-logo-dark.png'),
-      },
-      facebook: {
-        light: require('@/assets/images/soMe-logo/facebook-logo-light.png'),
-        dark: require('@/assets/images/soMe-logo/facebook-logo-dark.png'),
-      },
-      google: {
-        light: require('@/assets/images/soMe-logo/google-logo.png'),
-        dark: require('@/assets/images/soMe-logo/google-logo.png'),
-      },
-    };
-
-    const logoSource = logos[provider][theme];
-    const logoStyle =
-      provider === 'apple' ? buttonProviderStyles.appleLogo : buttonProviderStyles.logo;
-
-    return (
-      <Image
-        style={logoStyle}
-        source={logoSource}
-        alt={`Sign in with ${provider.charAt(0).toUpperCase() + provider.slice(1)} - ${theme} mode`}
-      />
-    );
-  };
-
-  const providerLogo = getProviderLogo();
 
   return (
     <Pressable
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
+      aria-label={`Sign in with ${provider.charAt(0).toUpperCase() + provider.slice(1)}`}
       style={[
         buttonProviderStyles.common,
-        theme === 'dark' ? buttonProviderStyles.commonDarkMode : buttonProviderStyles[provider],
+        theme === "light" && buttonProviderStyles[provider],
         style as ViewStyle,
       ]}
       {...rest}
     >
-      {providerLogo}
+      {
+        provider === "apple" ? (
+          <AppleIcon theme={theme}/>
+        ) : provider === "google" ? (
+          <GoogleIcon theme={theme}/>
+        ) : <FacebookIcon theme={theme}/>
+      }
     </Pressable>
   );
 }
