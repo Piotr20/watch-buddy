@@ -1,8 +1,13 @@
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { ReactNode, useState, useCallback, Provider } from 'react';
-import { Pressable, PressableProps, StyleSheet, ViewStyle, useColorScheme, Image } from 'react-native';
-import { ThemeText } from './typography';
-import { SvgIcon } from '@/components/svg-icon';
+import { useState } from 'react';
+import {
+  Image,
+  Pressable,
+  PressableProps,
+  StyleSheet,
+  ViewStyle,
+  useColorScheme,
+} from 'react-native';
 
 type Props = PressableProps & {
   provider?: 'google' | 'facebook' | 'apple';
@@ -12,7 +17,7 @@ type Props = PressableProps & {
 export function ThemeSoMePressable({ provider = 'google', style, ...rest }: Props) {
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const colors = useThemeColor();
-  const currentTheme = useColorScheme() ?? 'light';
+  const theme = useColorScheme() ?? 'light';
 
   const buttonProviderStyles = StyleSheet.create({
     common: {
@@ -23,6 +28,7 @@ export function ThemeSoMePressable({ provider = 'google', style, ...rest }: Prop
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'flex-start',
+      backgroundColor: theme === 'light' ? '' : colors.background.base,
     },
     commonDarkMode: {
       backgroundColor: !isPressed ? '#ffffff' : '#E0E0E9',
@@ -49,7 +55,7 @@ export function ThemeSoMePressable({ provider = 'google', style, ...rest }: Prop
     appleLogo: {
       height: 24,
       width: 20.22,
-    }
+    },
   });
 
   const getProviderLogo = () => {
@@ -66,22 +72,22 @@ export function ThemeSoMePressable({ provider = 'google', style, ...rest }: Prop
         light: require('@/assets/images/soMe-logo/google-logo.png'),
         dark: require('@/assets/images/soMe-logo/google-logo.png'),
       },
-    }
+    };
 
-    const logoSource = logos[provider][currentTheme];
-    const logoStyle = provider === "apple" ? buttonProviderStyles.appleLogo : buttonProviderStyles.logo;
+    const logoSource = logos[provider][theme];
+    const logoStyle =
+      provider === 'apple' ? buttonProviderStyles.appleLogo : buttonProviderStyles.logo;
 
     return (
-      <Image 
+      <Image
         style={logoStyle}
         source={logoSource}
-        alt={`Sign in with ${provider.charAt(0).toUpperCase() + provider.slice(1)} - ${currentTheme} mode`}
+        alt={`Sign in with ${provider.charAt(0).toUpperCase() + provider.slice(1)} - ${theme} mode`}
       />
-    )
+    );
   };
 
   const providerLogo = getProviderLogo();
-    
 
   return (
     <Pressable
@@ -89,7 +95,7 @@ export function ThemeSoMePressable({ provider = 'google', style, ...rest }: Prop
       onPressOut={() => setIsPressed(false)}
       style={[
         buttonProviderStyles.common,
-        currentTheme === 'dark' ? buttonProviderStyles.commonDarkMode : buttonProviderStyles[provider],
+        theme === 'dark' ? buttonProviderStyles.commonDarkMode : buttonProviderStyles[provider],
         style as ViewStyle,
       ]}
       {...rest}
