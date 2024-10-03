@@ -1,15 +1,17 @@
 import { SvgIcon } from '@/components/svg-icon';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemeText, ThemeTitle } from '@/components/theme/typography';
-import { ThemeSafeAreaView, ThemeTextInput } from '@/components/theme';
+import { ThemeSafeAreaView, ThemeTextInput, ThemeView } from '@/components/theme';
 import { SafeAreaView, useColorScheme } from 'react-native';
 import { ThemePressable } from '@/components/theme/ThemePressable';
 import { ThemeSoMePressable } from '@/components/theme/ThemeSoMePressable';
 import { GoogleIcon } from '@/components/icons/google';
+import { useSession } from '@/components/AuthProvider';
 
 export default function Home() {
   const colors = useThemeColor();
   const theme = useColorScheme() ?? 'light';
+  const { signOut, session } = useSession();
   return (
     <ThemeSafeAreaView
       style={{
@@ -31,8 +33,10 @@ export default function Home() {
 
       {/* <SvgIcon svg="arc3d" stroke="red" /> */}
       <SvgIcon svg="arc3d" stroke={colors.background.base} />
-      <GoogleIcon theme={theme} />
+
       <ThemeTextInput label="Email" />
+
+      <ThemePressable onPress={signOut}>Sign out</ThemePressable>
     </ThemeSafeAreaView>
   );
 }

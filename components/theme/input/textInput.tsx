@@ -1,32 +1,26 @@
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { useState } from 'react';
 import {
-  LayoutAnimation,
   Platform,
-  SafeAreaView,
+  StyleProp,
   TextInput,
   TextInputProps,
   TextStyle,
   View,
+  ViewStyle,
   type ViewProps,
 } from 'react-native';
-import { useThemeColor } from '@/hooks/useThemeColor';
-import { SafeAreaViewProps } from 'react-native-safe-area-context';
-import { useEffect, useState } from 'react';
-import { ThemeView } from '../view';
+import Animated, { Easing, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { ThemeText } from '../typography';
-import Animated, {
-  useSharedValue,
-  withTiming,
-  useAnimatedStyle,
-  Easing,
-} from 'react-native-reanimated';
 
 type Props = TextInputProps & {
   label: string;
   error?: string;
   info?: string;
+  containerStyle?: StyleProp<ViewStyle>;
 };
 
-export function ThemeTextInput({ label, error, info, style, ...rest }: Props) {
+export function ThemeTextInput({ label, error, info, containerStyle, style, ...rest }: Props) {
   const colors = useThemeColor();
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [value, setValue] = useState<string>();
@@ -38,17 +32,18 @@ export function ThemeTextInput({ label, error, info, style, ...rest }: Props) {
 
   const animStyles = useAnimatedStyle(() => {
     return {
-      top: isFocused || value ? withTiming(10, config) : withTiming('50%', config),
-      paddingHorizontal: isFocused || value ? 0 : 4,
+      top: isFocused || value ? withTiming(5, config) : withTiming(33, config),
+      paddingHorizontal: isFocused || value ? 4 : 0,
     };
   });
 
   return (
-    <ThemeView>
-      <ThemeView
+    <View>
+      <View
         style={{
-          paddingVertical: 10,
+          paddingTop: 5,
           position: 'relative',
+          ...(containerStyle as ViewProps),
         }}
       >
         <Animated.View
@@ -58,8 +53,8 @@ export function ThemeTextInput({ label, error, info, style, ...rest }: Props) {
               zIndex: 1,
               left: 16,
               transform: [{ translateY: -9.5 }],
-              backgroundColor: colors.background.base,
               pointerEvents: 'none',
+              backgroundColor: colors.background.base,
             },
             animStyles,
           ]}
@@ -70,7 +65,6 @@ export function ThemeTextInput({ label, error, info, style, ...rest }: Props) {
           style={{
             ...(Platform.OS === 'web' && ({ outlineStyle: 'none' } as any)),
             fontFamily: 'Rubik',
-
             backgroundColor: colors.background.base,
             color: colors.text.base,
             borderColor: isFocused
@@ -96,18 +90,17 @@ export function ThemeTextInput({ label, error, info, style, ...rest }: Props) {
           onChange={(e) => setValue(e.nativeEvent.text)}
           {...rest}
         />
-      </ThemeView>
-      {error ||
-        (info && (
-          <ThemeText
-            size="sm"
-            style={{
-              color: error ? colors.text.danger : colors.text.base,
-            }}
-          >
-            {error || info}
-          </ThemeText>
-        ))}
-    </ThemeView>
+      </View>
+      {(error || info) && (
+        <ThemeText
+          size="sm"
+          style={{
+            color: error ? colors.text.danger : colors.text.base,
+          }}
+        >
+          {error || info}
+        </ThemeText>
+      )}
+    </View>
   );
 }

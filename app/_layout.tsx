@@ -1,17 +1,13 @@
-import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
-import { Stack } from "expo-router";
-import "react-native-reanimated";
+import { SessionProvider } from '@/components/AuthProvider';
+import { useFonts } from 'expo-font';
+import { Slot, SplashScreen } from 'expo-router';
+import { useEffect } from 'react';
 
-import { SessionProvider } from "@/components/AuthProvider";
-import { useEffect } from "react";
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+export default function Root() {
   const [loaded, error] = useFonts({
-    Rubik: require("@/assets/fonts/Rubik-Regular.ttf"),
+    Rubik: require('@/assets/fonts/Rubik-Regular.ttf'),
   });
 
   useEffect(() => {
@@ -23,14 +19,10 @@ export default function RootLayout() {
   if (!loaded && !error) {
     return null;
   }
-
+  // Set up the auth context and render our layout inside of it.
   return (
     <SessionProvider>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="sign-in" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+      <Slot />
     </SessionProvider>
   );
 }
