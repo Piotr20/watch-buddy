@@ -33,7 +33,6 @@ export default function Home() {
 
       {/* <SvgIcon svg="arc3d" stroke="red" /> */}
       <SvgIcon svg="arc3d" stroke={colors.background.base} />
-
       <ThemeTextInput label="Email" />
 
       <ThemePressable onPress={signOut}>Sign out</ThemePressable>

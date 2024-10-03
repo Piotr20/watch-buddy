@@ -8,6 +8,10 @@ SplashScreen.preventAutoHideAsync();
 export default function Root() {
   const [loaded, error] = useFonts({
     Rubik: require('@/assets/fonts/Rubik-Regular.ttf'),
+    'Rubik-Medium': require('@/assets/fonts/Rubik-Medium.ttf'),
+    'Rubik-Semibold': require('@/assets/fonts/Rubik-SemiBold.ttf'),
+    'Rubik-Bold': require('@/assets/fonts/Rubik-Bold.ttf'),
+    'Rubik-Black': require('@/assets/fonts/Rubik-Black.ttf'),
   });
 
   useEffect(() => {

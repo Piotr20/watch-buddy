@@ -65,8 +65,8 @@ export function ThemeTextInput({ label, error, info, containerStyle, style, ...r
           style={{
             ...(Platform.OS === 'web' && ({ outlineStyle: 'none' } as any)),
             fontFamily: 'Rubik',
-            backgroundColor: colors.background.base,
-            color: colors.text.base,
+            backgroundColor: colors.background.inner,
+            color: colors.text.details,
             borderColor: isFocused
               ? colors.border.info
               : error
