@@ -1,3 +1,4 @@
+import { AppleAuthPressable } from '@/components/auth/appleAuthPressable';
 import { useSession } from '@/components/AuthProvider';
 import { ThemeTextInput, ThemeView } from '@/components/theme';
 import { Logo } from '@/components/theme/logo';
@@ -54,7 +55,7 @@ export default function SignIn() {
               style={{
                 marginTop: 176,
                 marginBottom: 24,
-                color: colors.text.heading,
+                color: theme === 'light' ? colors.text.heading : colors.text.brand,
               }}
             >
               Discover Movies Made for You!
@@ -102,6 +103,51 @@ export default function SignIn() {
               </ThemeText>
             </ThemePressable>
           </View>
+          <ThemeView
+            style={{
+              paddingHorizontal: 24,
+              marginTop: 32,
+            }}
+          >
+            <ThemeView
+              style={{
+                position: 'relative',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: colors.border.inverse,
+                  width: '100%',
+                  height: 1,
+                  position: 'absolute',
+                }}
+              />
+              <ThemeText
+                style={{
+                  backgroundColor: colors.background.base,
+                  color: colors.text.base,
+                  paddingHorizontal: 16,
+                }}
+              >
+                or
+              </ThemeText>
+            </ThemeView>
+            <ThemeView
+              style={{
+                marginTop: 24,
+                marginHorizontal: 'auto',
+              }}
+            >
+              <AppleAuthPressable
+                style={{
+                  width: 60,
+                  height: 60,
+                }}
+              />
+            </ThemeView>
+          </ThemeView>
           <ThemeView
             style={{
               marginHorizontal: 'auto',
