@@ -1,5 +1,6 @@
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { Falsy, RecursiveArray, RegisteredStyle, useColorScheme, ViewStyle } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 
 type Props = {
   style?:
@@ -39,6 +40,8 @@ export function AppleAuthPressable({ style }: Props) {
               AppleAuthentication.AppleAuthenticationScope.EMAIL,
             ],
           });
+          console.log(credential);
+          await SecureStore.setItemAsync('apple-auth-user', JSON.stringify(credential));
           // signed in
         } catch (e) {
           if ((e as any).code === 'ERR_REQUEST_CANCELED') {

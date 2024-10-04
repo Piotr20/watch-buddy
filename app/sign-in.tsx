@@ -7,27 +7,42 @@ import { ThemeText, ThemeTitle } from '@/components/theme/typography';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { router } from 'expo-router';
 import {
+  Dimensions,
   ImageBackground,
   Keyboard,
+  Platform,
   Pressable,
-  SafeAreaView,
   useColorScheme,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import * as SecureStore from 'expo-secure-store';
+import { useEffect, useState } from 'react';
 
 export default function SignIn() {
+  const [data, setData] = useState();
   const { signIn } = useSession();
   const colors = useThemeColor();
   const theme = useColorScheme();
+  const windowHeight = Dimensions.get('window').height;
+
+  useEffect(() => {
+    const getData = async () => {
+      const result = await SecureStore.getItemAsync('apple-auth-user');
+    };
+    const user = getData();
+    setData(data);
+  }, []);
 
   return (
     <Pressable
       style={{
         flex: 1,
+        minHeight: windowHeight,
       }}
       onPress={Keyboard.dismiss}
     >
-      <ThemeView style={{ flex: 1, flexDirection: 'column' }}>
+      <ThemeView style={{ flex: 1 }}>
         <ImageBackground
           source={
             theme === 'light'
@@ -38,7 +53,7 @@ export default function SignIn() {
             paddingHorizontal: 24,
           }}
         >
-          <SafeAreaView>
+          <SafeAreaView edges={['top']}>
             <Logo
               type="horizontal"
               style={{
@@ -63,6 +78,7 @@ export default function SignIn() {
           </SafeAreaView>
         </ImageBackground>
         <SafeAreaView
+          edges={['bottom']}
           style={{
             flex: 1,
           }}
@@ -77,7 +93,7 @@ export default function SignIn() {
                 marginBottom: 16,
               }}
             >
-              <ThemeTextInput label="Email" />
+              <ThemeTextInput label="Email" keyboardType="email-address" />
             </View>
             <View
               style={{
@@ -103,51 +119,54 @@ export default function SignIn() {
               </ThemeText>
             </ThemePressable>
           </View>
-          <ThemeView
-            style={{
-              paddingHorizontal: 24,
-              marginTop: 32,
-            }}
-          >
+          {Platform.OS === 'ios' && (
             <ThemeView
               style={{
-                position: 'relative',
-                justifyContent: 'center',
-                alignItems: 'center',
+                paddingHorizontal: 24,
+                marginTop: 32,
               }}
             >
-              <View
+              <ThemeView
                 style={{
-                  backgroundColor: colors.border.inverse,
-                  width: '100%',
-                  height: 1,
-                  position: 'absolute',
-                }}
-              />
-              <ThemeText
-                style={{
-                  backgroundColor: colors.background.base,
-                  color: colors.text.base,
-                  paddingHorizontal: 16,
+                  position: 'relative',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
-                or
-              </ThemeText>
-            </ThemeView>
-            <ThemeView
-              style={{
-                marginTop: 24,
-                marginHorizontal: 'auto',
-              }}
-            >
-              <AppleAuthPressable
+                <View
+                  style={{
+                    backgroundColor: colors.border.inverse,
+                    width: '100%',
+                    height: 1,
+                    position: 'absolute',
+                  }}
+                />
+                <ThemeText
+                  style={{
+                    backgroundColor: colors.background.base,
+                    color: colors.text.base,
+                    paddingHorizontal: 16,
+                  }}
+                >
+                  or
+                </ThemeText>
+              </ThemeView>
+              <ThemeView
                 style={{
-                  width: 60,
-                  height: 60,
+                  marginTop: 24,
+                  marginHorizontal: 'auto',
                 }}
-              />
+              >
+                <AppleAuthPressable
+                  style={{
+                    width: 60,
+                    height: 60,
+                  }}
+                />
+              </ThemeView>
+              <ThemeText>{JSON.stringify(data)}</ThemeText>
             </ThemeView>
-          </ThemeView>
+          )}
           <ThemeView
             style={{
               marginHorizontal: 'auto',
