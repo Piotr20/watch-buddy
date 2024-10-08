@@ -18,6 +18,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as SecureStore from 'expo-secure-store';
 import { useEffect, useState } from 'react';
+import { GoogleAuthPressable } from '@/components/auth/googleAuthPressable';
 
 export default function SignIn() {
   const [data, setData] = useState();
@@ -25,14 +26,6 @@ export default function SignIn() {
   const colors = useThemeColor();
   const theme = useColorScheme();
   const windowHeight = Dimensions.get('window').height;
-
-  useEffect(() => {
-    const getData = async () => {
-      const result = await SecureStore.getItemAsync('apple-auth-user');
-    };
-    const user = getData();
-    setData(data);
-  }, []);
 
   return (
     <Pressable
@@ -119,54 +112,60 @@ export default function SignIn() {
               </ThemeText>
             </ThemePressable>
           </View>
-          {Platform.OS === 'ios' && (
+
+          <ThemeView
+            style={{
+              paddingHorizontal: 24,
+              marginTop: 32,
+            }}
+          >
             <ThemeView
               style={{
-                paddingHorizontal: 24,
-                marginTop: 32,
+                position: 'relative',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
-              <ThemeView
+              <View
                 style={{
-                  position: 'relative',
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  backgroundColor: colors.border.inverse,
+                  width: '100%',
+                  height: 1,
+                  position: 'absolute',
+                }}
+              />
+              <ThemeText
+                style={{
+                  backgroundColor: colors.background.base,
+                  color: colors.text.base,
+                  paddingHorizontal: 16,
                 }}
               >
-                <View
-                  style={{
-                    backgroundColor: colors.border.inverse,
-                    width: '100%',
-                    height: 1,
-                    position: 'absolute',
-                  }}
-                />
-                <ThemeText
-                  style={{
-                    backgroundColor: colors.background.base,
-                    color: colors.text.base,
-                    paddingHorizontal: 16,
-                  }}
-                >
-                  or
-                </ThemeText>
-              </ThemeView>
-              <ThemeView
-                style={{
-                  marginTop: 24,
-                  marginHorizontal: 'auto',
-                }}
-              >
-                <AppleAuthPressable
-                  style={{
-                    width: 60,
-                    height: 60,
-                  }}
-                />
-              </ThemeView>
-              <ThemeText>{JSON.stringify(data)}</ThemeText>
+                or
+              </ThemeText>
             </ThemeView>
-          )}
+            <ThemeView
+              style={{
+                marginTop: 24,
+                marginHorizontal: 'auto',
+              }}
+            >
+              <AppleAuthPressable
+                style={{
+                  width: 60,
+                  height: 60,
+                }}
+              />
+              <GoogleAuthPressable
+                style={{
+                  width: 60,
+                  height: 60,
+                }}
+              />
+            </ThemeView>
+            <ThemeText>{JSON.stringify(data)}</ThemeText>
+          </ThemeView>
+
           <ThemeView
             style={{
               marginHorizontal: 'auto',
