@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Watch-buddy",
+    "name": "Watch buddy",
     "slug": "watch-buddy",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -10,17 +10,16 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#292929"
     },
     "ios": {
       "supportsTablet": true,
-      "usesAppleSignIn": true,
-      "bundleIdentifier": "com.piotr20.watchbuddy-ios"
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#292929"
       },
       "package": "com.piotr20.watchbuddy"
     },

@@ -1,4 +1,5 @@
 import { AppleAuthPressable } from '@/components/auth/appleAuthPressable';
+import { GoogleAuthPressable } from '@/components/auth/googleAuthPressable';
 import { useSession } from '@/components/AuthProvider';
 import { ThemeTextInput, ThemeView } from '@/components/theme';
 import { Logo } from '@/components/theme/logo';
@@ -10,18 +11,13 @@ import {
   Dimensions,
   ImageBackground,
   Keyboard,
-  Platform,
   Pressable,
   useColorScheme,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import * as SecureStore from 'expo-secure-store';
-import { useEffect, useState } from 'react';
-import { GoogleAuthPressable } from '@/components/auth/googleAuthPressable';
 
 export default function SignIn() {
-  const [data, setData] = useState();
   const { signIn } = useSession();
   const colors = useThemeColor();
   const theme = useColorScheme();
@@ -86,14 +82,14 @@ export default function SignIn() {
                 marginBottom: 16,
               }}
             >
-              <ThemeTextInput label="Email" keyboardType="email-address" />
+              <ThemeTextInput label="Email" textContentType="emailAddress" />
             </View>
             <View
               style={{
                 marginBottom: 24,
               }}
             >
-              <ThemeTextInput label="Password" secureTextEntry />
+              <ThemeTextInput label="Password" textContentType="password" secureTextEntry />
             </View>
             <ThemePressable
               onPress={() => {
@@ -163,7 +159,6 @@ export default function SignIn() {
                 }}
               />
             </ThemeView>
-            <ThemeText>{JSON.stringify(data)}</ThemeText>
           </ThemeView>
 
           <ThemeView
