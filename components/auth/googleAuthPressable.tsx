@@ -1,4 +1,7 @@
-import { EXPO_PUBLIC_ANDROID_GOOGLE_OAUTH2_CLIENT_ID } from '@/util/env-variables';
+import {
+  EXPO_PUBLIC_ANDROID_GOOGLE_OAUTH2_CLIENT_ID,
+  EXPO_PUBLIC_API_URL,
+} from '@/util/env-variables';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -6,6 +9,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import React, { useEffect } from 'react';
 import { Alert, StyleProp, useColorScheme, View, ViewStyle } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 
 type GoogleSignInError = Error & {
   code?: string;
@@ -28,7 +32,24 @@ export function GoogleAuthPressable({ style }: Props) {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      Alert.alert('User Info', JSON.stringify(userInfo));
+      const token = userInfo.data?.idToken;
+
+      // Send token to backend
+      const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/auth/social/google/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        await SecureStore.setItemAsync('token', data.token);
+        Alert.alert('Success', 'User authenticated successfully');
+      } else {
+        Alert.alert('Error', 'Failed to authenticate user');
+      }
     } catch (error) {
       const typedError = error as GoogleSignInError;
       if (typedError.code === statusCodes.SIGN_IN_CANCELLED) {

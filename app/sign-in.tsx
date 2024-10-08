@@ -7,7 +7,9 @@ import { ThemePressable } from '@/components/theme/ThemePressable';
 import { ThemeText, ThemeTitle } from '@/components/theme/typography';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { router } from 'expo-router';
+import { useState } from 'react';
 import {
+  Alert,
   Dimensions,
   ImageBackground,
   Keyboard,
@@ -16,12 +18,41 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import * as SecureStore from 'expo-secure-store';
+import { EXPO_PUBLIC_API_URL } from '@/util/env-variables';
 
 export default function SignIn() {
   const { signIn } = useSession();
   const colors = useThemeColor();
   const theme = useColorScheme();
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
   const windowHeight = Dimensions.get('window').height;
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/auth/login/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        await SecureStore.setItemAsync('token', data.token);
+        Alert.alert('Success', 'User logged in successfully');
+        // Store the token or handle the authenticated user
+      } else {
+        const errorData = await response.json();
+        Alert.alert('Error', errorData.detail || 'Failed to log in');
+      }
+    } catch (error) {
+      Alert.alert('Error', (error as Error).message);
+    }
+  };
 
   return (
     <Pressable

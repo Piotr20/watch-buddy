@@ -1,6 +1,14 @@
 import * as AppleAuthentication from 'expo-apple-authentication';
-import { Falsy, RecursiveArray, RegisteredStyle, useColorScheme, ViewStyle } from 'react-native';
+import {
+  Alert,
+  Falsy,
+  RecursiveArray,
+  RegisteredStyle,
+  useColorScheme,
+  ViewStyle,
+} from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import { EXPO_PUBLIC_API_URL } from '@/util/env-variables';
 
 type Props = {
   style?:
@@ -40,14 +48,29 @@ export function AppleAuthPressable({ style }: Props) {
               AppleAuthentication.AppleAuthenticationScope.EMAIL,
             ],
           });
-          console.log(credential);
-          await SecureStore.setItemAsync('apple-auth-user', JSON.stringify(credential));
-          // signed in
+          const token = credential.identityToken;
+
+          // Send token to backend
+          const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/auth/social/apple/`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            await SecureStore.setItemAsync('token', data.token);
+            Alert.alert('Success', 'User authenticated successfully');
+          } else {
+            Alert.alert('Error', 'Failed to authenticate user');
+          }
         } catch (e) {
           if ((e as any).code === 'ERR_REQUEST_CANCELED') {
-            // handle that the user canceled the sign-in flow
+            Alert.alert('Cancelled', 'User cancelled the login flow');
           } else {
-            // handle other errors
+            Alert.alert('Error', 'Failed to authenticate user');
           }
         }
       }}
