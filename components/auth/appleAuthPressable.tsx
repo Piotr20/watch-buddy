@@ -62,7 +62,7 @@ export function AppleAuthPressable({ style }: Props) {
           if (response.ok) {
             const data = await response.json();
             await SecureStore.setItemAsync('token', data.token);
-            Alert.alert('Success', 'User authenticated successfully');
+            Alert.alert('Success', 'User authenticated successfully', data);
           } else {
             Alert.alert('Error', 'Failed to authenticate user');
           }

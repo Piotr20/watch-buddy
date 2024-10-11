@@ -46,7 +46,7 @@ export function GoogleAuthPressable({ style }: Props) {
       if (response.ok) {
         const data = await response.json();
         await SecureStore.setItemAsync('token', data.token);
-        Alert.alert('Success', 'User authenticated successfully');
+        Alert.alert('Success', 'User authenticated successfully', data);
       } else {
         Alert.alert('Error', 'Failed to authenticate user');
       }
@@ -66,6 +66,7 @@ export function GoogleAuthPressable({ style }: Props) {
 
   return (
     <GoogleSigninButton
+      size={60}
       onPress={signIn}
       color={theme === 'light' ? 'dark' : 'light'}
       style={{

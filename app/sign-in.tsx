@@ -175,6 +175,8 @@ export default function SignIn() {
               style={{
                 marginTop: 24,
                 marginHorizontal: 'auto',
+                display: 'flex',
+                columnGap: 4,
               }}
             >
               <AppleAuthPressable
