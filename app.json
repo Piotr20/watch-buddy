@@ -41,6 +41,7 @@
     "plugins": [
       "expo-router",
       "expo-apple-authentication",
+      "react-native-fbsdk-next",
       [
         "expo-font",
         {

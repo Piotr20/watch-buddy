@@ -20,6 +20,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as SecureStore from 'expo-secure-store';
 import { EXPO_PUBLIC_API_URL } from '@/util/env-variables';
+import { FacebookAuthPressable } from '@/components/auth/facebookAuthPressable';
 
 export default function SignIn() {
   const { signIn } = useSession();
@@ -187,6 +188,7 @@ export default function SignIn() {
                 }}
               />
               <GoogleAuthPressable />
+              <FacebookAuthPressable />
             </ThemeView>
           </ThemeView>
 
