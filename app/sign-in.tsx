@@ -176,7 +176,8 @@ export default function SignIn() {
                 marginTop: 24,
                 marginHorizontal: 'auto',
                 display: 'flex',
-                columnGap: 4,
+                flexDirection: 'row',
+                columnGap: 10,
               }}
             >
               <AppleAuthPressable
@@ -185,12 +186,7 @@ export default function SignIn() {
                   height: 60,
                 }}
               />
-              <GoogleAuthPressable
-                style={{
-                  width: 60,
-                  height: 60,
-                }}
-              />
+              <GoogleAuthPressable />
             </ThemeView>
           </ThemeView>
 

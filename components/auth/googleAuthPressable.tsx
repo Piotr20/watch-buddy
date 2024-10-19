@@ -9,8 +9,11 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import React, { useEffect } from 'react';
-import { Alert, StyleProp, useColorScheme, View, ViewStyle } from 'react-native';
+import { Alert, Pressable, StyleProp, useColorScheme, View, ViewStyle } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import { GoogleIcon } from '../icons';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { colors } from '@/constants/colors';
 
 type GoogleSignInError = Error & {
   code?: string;
@@ -22,6 +25,7 @@ type Props = {
 
 export function GoogleAuthPressable({ style }: Props) {
   const theme = useColorScheme() ?? 'light';
+  const themeColor = useThemeColor();
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -67,14 +71,22 @@ export function GoogleAuthPressable({ style }: Props) {
   };
 
   return (
-    <GoogleSigninButton
-      size={60}
+    <Pressable
       onPress={signIn}
-      color={theme === 'light' ? 'dark' : 'light'}
       style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 60,
+        height: 60,
         borderRadius: 16,
+        backgroundColor: colors.white,
+        borderWidth: 1,
+        borderColor: themeColor.border.inverse,
         ...(style as ViewStyle),
       }}
-    />
+    >
+      <GoogleIcon theme={theme} />
+    </Pressable>
   );
 }
