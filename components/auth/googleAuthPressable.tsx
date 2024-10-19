@@ -13,7 +13,7 @@ import { Alert, Pressable, StyleProp, useColorScheme, View, ViewStyle } from 're
 import * as SecureStore from 'expo-secure-store';
 import { GoogleIcon } from '../icons';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { colors } from '@/constants/colors';
+import { colors } from '@/util/colors';
 
 type GoogleSignInError = Error & {
   code?: string;

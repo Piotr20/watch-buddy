@@ -15,7 +15,16 @@
     "ios": {
       "supportsTablet": true,
       "usesAppleSignIn": true,
-      "bundleIdentifier": "com.piotr20.watchbuddy"
+      "bundleIdentifier": "com.piotr20.watchbuddy",
+      "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.274331296587-lb3qq7oor5dafpfmjegsv30p4flei8s9"
+            ]
+          }
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -52,7 +61,7 @@
       [
         "@react-native-google-signin/google-signin",
         {
-          "iosUrlScheme": "com.googleusercontent.apps.274331296587-lb3qq7oor5dafpfmjegsv30p4flei8s9"
+          "iosUrlScheme": "com.googleusercontent.apps.watch-buddy-437912"
         }
       ]
     ],
