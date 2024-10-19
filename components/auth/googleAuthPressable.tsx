@@ -1,6 +1,7 @@
 import {
   EXPO_PUBLIC_ANDROID_GOOGLE_OAUTH2_CLIENT_ID,
   EXPO_PUBLIC_API_URL,
+  EXPO_PUBLIC_IOS_GOOGLE_OAUTH2_CLIENT_ID,
 } from '@/util/env-variables';
 import {
   GoogleSignin,
@@ -25,6 +26,7 @@ export function GoogleAuthPressable({ style }: Props) {
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: EXPO_PUBLIC_ANDROID_GOOGLE_OAUTH2_CLIENT_ID,
+      iosClientId: EXPO_PUBLIC_IOS_GOOGLE_OAUTH2_CLIENT_ID,
     });
   }, []);
 
