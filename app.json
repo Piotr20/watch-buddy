@@ -23,7 +23,10 @@
               "com.googleusercontent.apps.274331296587-lb3qq7oor5dafpfmjegsv30p4flei8s9"
             ]
           }
-        ]
+        ],
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
       }
     },
     "android": {
@@ -31,7 +34,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#292929"
       },
-      "package": "com.piotr20.watchbuddy"
+      "package": "com.piotr20.watchbuddy",
+      "usesCleartextTraffic": true
     },
     "web": {
       "bundler": "metro",
@@ -40,6 +44,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-build-properties",
       "expo-apple-authentication",
       [
         "expo-font",
@@ -62,19 +67,6 @@
         "@react-native-google-signin/google-signin",
         {
           "iosUrlScheme": "com.googleusercontent.apps.watch-buddy-437912"
-        }
-      ],
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "usesCleartextTraffic": true
-          },
-          "ios": {
-            "infoPlist": {
-              "NSAppTransportSecurity": { "NSAllowsArbitraryLoads": true }
-            }
-          }
         }
       ]
     ],

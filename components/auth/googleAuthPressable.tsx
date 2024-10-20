@@ -39,6 +39,7 @@ export function GoogleAuthPressable({ style }: Props) {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       const token = userInfo.data?.idToken;
+      console.log('google token', token);
 
       // Send token to backend
       const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/auth/social/google`, {
