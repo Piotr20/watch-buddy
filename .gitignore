@@ -21,3 +21,6 @@ expo-env.d.ts
 
 # ignores all .env files
 .env*
+
+# ignore GCP JSON
+watch-buddy-437912-a4a0f2de3f4a.json

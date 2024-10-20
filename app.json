@@ -63,6 +63,19 @@
         {
           "iosUrlScheme": "com.googleusercontent.apps.watch-buddy-437912"
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          },
+          "ios": {
+            "infoPlist": {
+              "NSAppTransportSecurity": { "NSAllowsArbitraryLoads": true }
+            }
+          }
+        }
       ]
     ],
     "experiments": {

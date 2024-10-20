@@ -41,21 +41,20 @@ export function GoogleAuthPressable({ style }: Props) {
       const token = userInfo.data?.idToken;
 
       // Send token to backend
-      const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/auth/social/google/`, {
+      const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/auth/social/google`, {
         method: 'POST',
         headers: {
+          Accept: '/',
+          Connection: 'keep-alive',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ token }),
       });
+      console.log('response', response);
 
-      if (response.ok) {
-        const data = await response.json();
-        await SecureStore.setItemAsync('token', data.token);
-        Alert.alert('Success', 'User authenticated successfully', data);
-      } else {
-        Alert.alert('Error', 'Failed to authenticate user');
-      }
+      const data = await response.json();
+      await SecureStore.setItemAsync('token', data.token);
+      Alert.alert('Success', 'User authenticated successfully', data);
     } catch (error) {
       const typedError = error as GoogleSignInError;
       if (typedError.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -65,6 +64,7 @@ export function GoogleAuthPressable({ style }: Props) {
       } else if (typedError.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         Alert.alert('Error', 'Play services not available or outdated');
       } else {
+        console.log('error', error);
         Alert.alert('Error', (error as Error).message);
       }
     }

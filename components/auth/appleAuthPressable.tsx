@@ -49,6 +49,7 @@ export function AppleAuthPressable({ style }: Props) {
             ],
           });
           const token = credential.identityToken;
+          console.log('apple token', token);
 
           // Send token to backend
           const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/auth/social/apple/`, {
