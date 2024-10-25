@@ -70,10 +70,20 @@ export default function SignIn() {
               : require('@/assets/images/backgrounds/movies_yellow_dark.png')
           }
           style={{
-            paddingHorizontal: 24,
+            flex: 1,
+            justifyContent: 'flex-start',
+          }}
+          imageStyle={{
+            width: '100%',
+            height: windowHeight / 2,
           }}
         >
-          <SafeAreaView edges={['top']}>
+          <SafeAreaView
+            style={{
+              flex: 1,
+              justifyContent: 'space-between',
+            }}
+          >
             <Logo
               type="horizontal"
               style={{
@@ -84,142 +94,137 @@ export default function SignIn() {
                 marginTop: 6,
               }}
             />
-            <ThemeTitle
-              size="5xl"
-              bold
-              style={{
-                marginTop: 176,
-                marginBottom: 24,
-                color: theme === 'light' ? colors.text.heading : colors.text.brand,
-              }}
-            >
-              Discover Movies Made for You!
-            </ThemeTitle>
-          </SafeAreaView>
-        </ImageBackground>
-        <SafeAreaView
-          edges={['bottom']}
-          style={{
-            flex: 1,
-          }}
-        >
-          <View
-            style={{
-              paddingHorizontal: 24,
-            }}
-          >
-            <View
-              style={{
-                marginBottom: 16,
-              }}
-            >
-              <ThemeTextInput label="Email" textContentType="emailAddress" />
-            </View>
-            <View
-              style={{
-                marginBottom: 24,
-              }}
-            >
-              <ThemeTextInput label="Password" textContentType="password" secureTextEntry />
-            </View>
-            <ThemePressable
-              onPress={() => {
-                signIn();
-                // Navigate after signing in. You may want to tweak this to ensure sign-in is
-                // successful before navigating.
-                router.replace('/');
-              }}
-            >
-              <ThemeText
+            <View>
+              <ThemeTitle
+                size="5xl"
+                bold
                 style={{
-                  color: colors.text.inverse,
+                  paddingHorizontal: 24,
+                  marginTop: 48,
+                  marginBottom: 24,
+                  color: theme === 'light' ? colors.text.heading : colors.text.brand,
                 }}
               >
-                Sign In
-              </ThemeText>
-            </ThemePressable>
-          </View>
+                Discover Movies Made for You!
+              </ThemeTitle>
 
-          <ThemeView
-            style={{
-              paddingHorizontal: 24,
-              marginTop: 32,
-            }}
-          >
-            <ThemeView
-              style={{
-                position: 'relative',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
               <View
                 style={{
-                  backgroundColor: colors.border.inverse,
-                  width: '100%',
-                  height: 1,
-                  position: 'absolute',
-                }}
-              />
-              <ThemeText
-                style={{
-                  backgroundColor: colors.background.base,
-                  color: colors.text.base,
-                  paddingHorizontal: 16,
+                  paddingHorizontal: 24,
                 }}
               >
-                or
-              </ThemeText>
-            </ThemeView>
+                <View
+                  style={{
+                    marginBottom: 16,
+                  }}
+                >
+                  <ThemeTextInput label="Email" textContentType="emailAddress" />
+                </View>
+                <View
+                  style={{
+                    marginBottom: 24,
+                  }}
+                >
+                  <ThemeTextInput label="Password" textContentType="password" secureTextEntry />
+                </View>
+                <ThemePressable
+                  onPress={() => {
+                    signIn();
+                    // Navigate after signing in. You may want to tweak this to ensure sign-in is
+                    // successful before navigating.
+                    router.replace('/');
+                  }}
+                >
+                  <ThemeText
+                    style={{
+                      color: colors.text.inverse,
+                    }}
+                  >
+                    Sign In
+                  </ThemeText>
+                </ThemePressable>
+              </View>
+
+              <ThemeView
+                style={{
+                  paddingHorizontal: 24,
+                  marginTop: 32,
+                }}
+              >
+                <ThemeView
+                  style={{
+                    position: 'relative',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor: colors.border.inverse,
+                      width: '100%',
+                      height: 1,
+                      position: 'absolute',
+                    }}
+                  />
+                  <ThemeText
+                    style={{
+                      backgroundColor: colors.background.base,
+                      color: colors.text.base,
+                      paddingHorizontal: 16,
+                    }}
+                  >
+                    or
+                  </ThemeText>
+                </ThemeView>
+                <ThemeView
+                  style={{
+                    marginTop: 24,
+                    marginHorizontal: 'auto',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    columnGap: 10,
+                  }}
+                >
+                  <AppleAuthPressable
+                    style={{
+                      width: 60,
+                      height: 60,
+                    }}
+                  />
+                  <GoogleAuthPressable />
+                </ThemeView>
+              </ThemeView>
+            </View>
             <ThemeView
               style={{
-                marginTop: 24,
                 marginHorizontal: 'auto',
+                marginBottom: 12,
                 display: 'flex',
                 flexDirection: 'row',
-                columnGap: 10,
+                gap: 4,
               }}
             >
-              <AppleAuthPressable
+              <ThemeText>Don’t have an account yet?</ThemeText>
+              <ThemePressable
+                type="icon"
                 style={{
-                  width: 60,
-                  height: 60,
+                  padding: 0,
                 }}
-              />
-              <GoogleAuthPressable />
-            </ThemeView>
-          </ThemeView>
-
-          <ThemeView
-            style={{
-              marginHorizontal: 'auto',
-              marginTop: 'auto',
-              marginBottom: 36,
-              display: 'flex',
-              flexDirection: 'row',
-              gap: 4,
-            }}
-          >
-            <ThemeText>Don’t have an account yet?</ThemeText>
-            <ThemePressable
-              type="icon"
-              style={{
-                padding: 0,
-              }}
-              onPress={() => {
-                router.push('/register');
-              }}
-            >
-              <ThemeText
-                style={{
-                  color: colors.text.brand,
+                onPress={() => {
+                  router.push('/register');
                 }}
               >
-                Join us!
-              </ThemeText>
-            </ThemePressable>
-          </ThemeView>
-        </SafeAreaView>
+                <ThemeText
+                  style={{
+                    color: colors.text.brand,
+                  }}
+                >
+                  Join us!
+                </ThemeText>
+              </ThemePressable>
+            </ThemeView>
+          </SafeAreaView>
+        </ImageBackground>
       </ThemeView>
     </Pressable>
   );

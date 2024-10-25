@@ -59,10 +59,21 @@ export default function EmailVerify() {
               : require('@/assets/images/backgrounds/movies_yellow_dark.png')
           }
           style={{
-            paddingHorizontal: 24,
+            flex: 1,
+            justifyContent: 'flex-start',
+          }}
+          imageStyle={{
+            width: '100%',
+            height: windowHeight / 2,
           }}
         >
-          <SafeAreaView edges={['top']}>
+          <SafeAreaView
+            style={{
+              flex: 1,
+              paddingHorizontal: 24,
+              justifyContent: 'flex-start',
+            }}
+          >
             <Logo
               type="horizontal"
               style={{
@@ -73,95 +84,91 @@ export default function EmailVerify() {
                 marginTop: 6,
               }}
             />
-            <ThemeTitle
-              size="5xl"
-              bold
+            <View
               style={{
-                marginTop: 176,
-                marginBottom: 4,
-                color: theme === 'light' ? colors.text.heading : colors.text.brand,
+                flex: 1,
+                justifyContent: 'center',
               }}
             >
-              We've sent you a verification email!
-            </ThemeTitle>
-            <ThemeText
-              style={{
-                marginBottom: 24,
-              }}
-            >
-              We've sent you a verification email to{' '}
-              <ThemeText
+              <ThemeTitle
+                size="5xl"
                 bold
                 style={{
+                  marginBottom: 4,
+
                   color: theme === 'light' ? colors.text.heading : colors.text.brand,
                 }}
               >
-                {user?.email}
-              </ThemeText>
-              . Please verify your email to continue.
-            </ThemeText>
-          </SafeAreaView>
-        </ImageBackground>
-        <SafeAreaView
-          edges={['bottom']}
-          style={{
-            flex: 1,
-          }}
-        >
-          <View
-            style={{
-              paddingHorizontal: 24,
-            }}
-          >
-            <ThemePressable
-              onPress={() => {
-                router.replace('/sign-in');
-              }}
-            >
+                We've sent you a verification email!
+              </ThemeTitle>
               <ThemeText
                 style={{
-                  color: colors.text.inverse,
+                  marginBottom: 24,
                 }}
               >
-                Go to sign in
+                We've sent you a verification email to{' '}
+                <ThemeText
+                  bold
+                  style={{
+                    color: theme === 'light' ? colors.text.heading : colors.text.brand,
+                  }}
+                >
+                  {user?.email}
+                </ThemeText>
+                . Please verify your email to continue.
               </ThemeText>
-            </ThemePressable>
-          </View>
 
-          <ThemeView
-            style={{
-              paddingHorizontal: 24,
-              marginTop: 16,
-            }}
-          >
-            <ThemeText
-              style={{
-                marginBottom: 8,
-              }}
-            >
-              Haven't received the email?
-            </ThemeText>
-            <ThemePressable
-              type="secondary"
-              onPress={async () => {
-                if (user?.email) {
-                  const status = await resendVerificationEmail(user?.email);
-                  setResendStatus(status);
-                }
-              }}
-            >
-              {resendStatus ? (
+              <View>
+                <ThemePressable
+                  onPress={() => {
+                    router.replace('/sign-in');
+                  }}
+                >
+                  <ThemeText
+                    style={{
+                      color: colors.text.inverse,
+                    }}
+                  >
+                    Go to sign in
+                  </ThemeText>
+                </ThemePressable>
+              </View>
+
+              <ThemeView
+                style={{
+                  marginTop: 16,
+                }}
+              >
                 <ThemeText
                   style={{
-                    color: colors.text.success,
+                    marginBottom: 8,
                   }}
-                ></ThemeText>
-              ) : (
-                <ThemeText>Resend email</ThemeText>
-              )}
-            </ThemePressable>
-          </ThemeView>
-        </SafeAreaView>
+                >
+                  Haven't received the email?
+                </ThemeText>
+                <ThemePressable
+                  type="secondary"
+                  onPress={async () => {
+                    if (user?.email) {
+                      const status = await resendVerificationEmail(user?.email);
+                      setResendStatus(status);
+                    }
+                  }}
+                >
+                  {resendStatus ? (
+                    <ThemeText
+                      style={{
+                        color: colors.text.success,
+                      }}
+                    ></ThemeText>
+                  ) : (
+                    <ThemeText>Resend email</ThemeText>
+                  )}
+                </ThemePressable>
+              </ThemeView>
+            </View>
+          </SafeAreaView>
+        </ImageBackground>
       </ThemeView>
     </Pressable>
   );

@@ -54,7 +54,6 @@ export function ThemeTextInput({ label, error, info, containerStyle, style, ...r
               left: 16,
               transform: [{ translateY: -9.5 }],
               pointerEvents: 'none',
-              backgroundColor: colors.background.base,
             },
             animStyles,
           ]}
