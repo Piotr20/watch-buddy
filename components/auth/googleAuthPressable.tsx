@@ -1,61 +1,86 @@
-import {
-  EXPO_PUBLIC_ANDROID_GOOGLE_OAUTH2_CLIENT_ID,
-  EXPO_PUBLIC_API_URL,
-  EXPO_PUBLIC_IOS_GOOGLE_OAUTH2_CLIENT_ID,
-} from '@/util/env-variables';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import React, { useEffect } from 'react';
-import { Alert, Pressable, StyleProp, useColorScheme, View, ViewStyle } from 'react-native';
+import React from 'react';
+import { Alert, Pressable, StyleProp, ViewStyle } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import { GoogleIcon } from '../icons';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { GoogleIcon } from '../icons'; // Ensure you have a GoogleIcon component
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { colors } from '@/util/colors';
-
-type GoogleSignInError = Error & {
-  code?: string;
-};
+import { EXPO_PUBLIC_API_URL } from '@/util/env-variables';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
-export function GoogleAuthPressable({ style }: Props) {
-  const theme = useColorScheme() ?? 'light';
-  const themeColor = useThemeColor();
+type GoogleSignInError = {
+  code: string;
+  message: string;
+};
 
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId: EXPO_PUBLIC_ANDROID_GOOGLE_OAUTH2_CLIENT_ID,
-      iosClientId: EXPO_PUBLIC_IOS_GOOGLE_OAUTH2_CLIENT_ID,
-    });
-  }, []);
+export function GoogleAuthPressable({ style }: Props) {
+  const themeColor = useThemeColor();
 
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      const token = userInfo.data?.idToken;
-      console.log('google token', token);
+      const tokens = await GoogleSignin.getTokens();
+      const { accessToken, idToken } = tokens;
+      console.log('google tokens', tokens);
 
       // Send token to backend
-      const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/auth/social/google`, {
+      const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/auth/google/`, {
         method: 'POST',
         headers: {
-          Accept: '/',
-          Connection: 'keep-alive',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ token }),
+        body: JSON.stringify({ access_token: accessToken }),
       });
-      console.log('response', response);
+
+      // Extract cookies from response headers
+      const cookies = response.headers.get('set-cookie');
+      if (cookies) {
+        const cookieArray = cookies.split(', ');
+        const cookieMap: { [key: string]: string } = {};
+
+        cookieArray.forEach((cookie) => {
+          const [nameValue, ...attributes] = cookie.split(';');
+          if (nameValue) {
+            const [name, value] = nameValue.split('=');
+            if (name && value) {
+              cookieMap[name.trim()] = value.trim();
+            }
+          }
+        });
+
+        console.log('Cookies:', cookieMap);
+
+        // Store relevant cookies in SecureStore
+        if (cookieMap['_auth']) await SecureStore.setItemAsync('auth_token', cookieMap['_auth']);
+        if (cookieMap['refresh_token'])
+          await SecureStore.setItemAsync('refresh_token', cookieMap['refresh_token']);
+        if (cookieMap['csrftoken'])
+          await SecureStore.setItemAsync('csrftoken', cookieMap['csrftoken']);
+        if (cookieMap['sessionid'])
+          await SecureStore.setItemAsync('sessionid', cookieMap['sessionid']);
+      }
 
       const data = await response.json();
-      await SecureStore.setItemAsync('token', data.token);
-      Alert.alert('Success', 'User authenticated successfully', data);
+      console.log('data', data);
+
+      if (data.access) {
+        await SecureStore.setItemAsync('access_token', data.access);
+        Alert.alert('Success', 'User authenticated successfully', data);
+      }
+      if (data.user) {
+        await SecureStore.setItemAsync(
+          'user',
+          JSON.stringify({
+            email: data.user.email,
+            username: data.user.username,
+            first_name: data.user.first_name,
+            last_name: data.user.last_name,
+          })
+        );
+      }
     } catch (error) {
       const typedError = error as GoogleSignInError;
       if (typedError.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -66,7 +91,7 @@ export function GoogleAuthPressable({ style }: Props) {
         Alert.alert('Error', 'Play services not available or outdated');
       } else {
         console.log('error', error);
-        Alert.alert('Error', (error as Error).message);
+        Alert.alert('Error', 'Network request failed');
       }
     }
   };
@@ -87,7 +112,7 @@ export function GoogleAuthPressable({ style }: Props) {
         ...(style as ViewStyle),
       }}
     >
-      <GoogleIcon theme={theme} />
+      <GoogleIcon />
     </Pressable>
   );
 }
