@@ -1,7 +1,7 @@
 import { EXPO_PUBLIC_API_URL } from '@/util/env-variables';
 import * as SecureStore from 'expo-secure-store';
 
-export async function resendVerificationEmail(email: string) {
+export async function resendRegisterVerificationEmail(email: string) {
   try {
     const csrftoken = await SecureStore.getItemAsync('csrftoken');
     const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/auth/registration/resend-email/`, {

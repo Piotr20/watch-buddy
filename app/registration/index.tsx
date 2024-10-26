@@ -284,7 +284,7 @@ export default function Register() {
                   padding: 0,
                 }}
                 onPress={() => {
-                  router.push('/registration/email-verify');
+                  router.push('/forgot-password');
                 }}
               >
                 <ThemeText

@@ -1,36 +1,19 @@
-import { AppleAuthPressable } from '@/components/auth/appleAuthPressable';
-import { GoogleAuthPressable } from '@/components/auth/googleAuthPressable';
-import { useSession } from '@/components/AuthProvider';
-import { ThemeTextInput, ThemeView } from '@/components/theme';
+import { SvgIcon } from '@/components/svg-icon';
+import { ThemeView } from '@/components/theme';
 import { Logo } from '@/components/theme/logo';
 import { ThemePressable } from '@/components/theme/ThemePressable';
 import { ThemeText, ThemeTitle } from '@/components/theme/typography';
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { User } from '@/models/user';
+import { getUserFromSecureStore } from '@/services/getUserFromSecureStore.service';
+import { resendRegisterVerificationEmail } from '@/services/resendRegisterVerificationEmail.service';
+import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import {
-  Alert,
-  Dimensions,
-  ImageBackground,
-  Keyboard,
-  Pressable,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { Dimensions, Keyboard, Pressable, useColorScheme, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import * as SecureStore from 'expo-secure-store';
-import { EXPO_PUBLIC_API_URL } from '@/util/env-variables';
-import { User } from '@/models/user';
-import { resendVerificationEmail } from '@/services/resendVerificationEmail.service';
-import { Image } from 'expo-image';
 
-async function getPreVerifiedUserFromSecureStore() {
-  const user = await SecureStore.getItemAsync('user');
-  return user ? JSON.parse(user) : null;
-}
-
-export default function EmailVerify() {
-  const { signIn } = useSession();
+export default function RegisterEmailVerify() {
   const colors = useThemeColor();
   const theme = useColorScheme();
   const [user, setUser] = useState<User>();
@@ -39,7 +22,7 @@ export default function EmailVerify() {
   const windowHeight = Dimensions.get('window').height;
 
   useEffect(() => {
-    getPreVerifiedUserFromSecureStore().then((user) => {
+    getUserFromSecureStore().then((user) => {
       setUser(user);
     });
   }, []);
@@ -53,134 +36,139 @@ export default function EmailVerify() {
       onPress={Keyboard.dismiss}
     >
       <ThemeView style={{ flex: 1 }}>
-        <ImageBackground
-          source={
-            theme === 'light'
-              ? require('@/assets/images/backgrounds/movies_yellow.png')
-              : require('@/assets/images/backgrounds/movies_yellow_dark.png')
-          }
+        <SafeAreaView
           style={{
             flex: 1,
+            paddingHorizontal: 24,
             justifyContent: 'flex-start',
           }}
-          imageStyle={{
-            width: '100%',
-            height: windowHeight / 2,
-          }}
         >
-          <SafeAreaView
+          <Logo
+            type="horizontal"
+            style={{
+              height: 32,
+              width: 144,
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: 6,
+            }}
+          />
+          <View
             style={{
               flex: 1,
-              paddingHorizontal: 24,
-              justifyContent: 'flex-start',
+              justifyContent: 'center',
             }}
           >
-            <Logo
-              type="horizontal"
+            <Image
+              source={require('@/assets/images/illustrations/verification-checkmark.png')}
               style={{
-                height: 32,
-                width: 144,
+                width: '50%',
+                aspectRatio: 1,
                 marginLeft: 'auto',
                 marginRight: 'auto',
-                marginTop: 6,
               }}
             />
-            <View
+            <ThemeTitle
+              size="3xl"
+              bold
               style={{
-                flex: 1,
-                justifyContent: 'center',
+                marginTop: 40,
+                marginBottom: 12,
               }}
             >
-              <Image
-                source={require('@/assets/images/illustrations/verification-checkmark.png')}
-                style={{
-                  width: 200,
-                  height: 200,
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                }}
-              />
-              <ThemeTitle
-                size="5xl"
+              We've sent you a verification email!
+            </ThemeTitle>
+            <ThemeText
+              style={{
+                marginBottom: 32,
+              }}
+            >
+              We've sent you a verification email to{' '}
+              <ThemeText
                 bold
                 style={{
-                  marginTop: 40,
-                  marginBottom: 12,
-
-                  color: theme === 'light' ? colors.text.heading : colors.text.brand,
+                  color: colors.text.brand,
                 }}
               >
-                We've sent you a verification email!
-              </ThemeTitle>
+                {user?.email}
+              </ThemeText>
+              . Please verify your email to continue.
+            </ThemeText>
+
+            <View>
+              <ThemePressable
+                onPress={() => {
+                  router.replace('/sign-in');
+                }}
+              >
+                <ThemeText
+                  style={{
+                    color: colors.text.inverse,
+                  }}
+                >
+                  Go to sign in
+                </ThemeText>
+              </ThemePressable>
+            </View>
+
+            <ThemeView
+              style={{
+                marginTop: 32,
+                marginBottom: 8,
+              }}
+            >
               <ThemeText
                 style={{
-                  marginBottom: 32,
-                }}
-              >
-                We've sent you a verification email to{' '}
-                <ThemeText
-                  bold
-                  style={{
-                    color: theme === 'light' ? colors.text.heading : colors.text.brand,
-                  }}
-                >
-                  {user?.email}
-                </ThemeText>
-                . Please verify your email to continue.
-              </ThemeText>
-
-              <View>
-                <ThemePressable
-                  onPress={() => {
-                    router.replace('/sign-in');
-                  }}
-                >
-                  <ThemeText
-                    style={{
-                      color: colors.text.inverse,
-                    }}
-                  >
-                    Go to sign in
-                  </ThemeText>
-                </ThemePressable>
-              </View>
-
-              <ThemeView
-                style={{
-                  marginTop: 32,
                   marginBottom: 8,
                 }}
               >
-                <ThemeText
-                  style={{
-                    marginBottom: 8,
-                  }}
-                >
-                  Haven't received the email?
-                </ThemeText>
-                <ThemePressable
-                  type="secondary"
-                  onPress={async () => {
-                    if (user?.email) {
-                      const status = await resendVerificationEmail(user?.email);
-                      setResendStatus(status);
-                    }
-                  }}
-                >
-                  {resendStatus ? (
+                Haven't received the email?
+              </ThemeText>
+              <ThemePressable
+                type="secondary"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  ...(resendStatus && {
+                    borderColor: colors.text.success,
+                    pointerEvents: 'none',
+                  }),
+                }}
+                onPress={async () => {
+                  if (user?.email) {
+                    const status = await resendRegisterVerificationEmail(user?.email);
+                    setResendStatus(status);
+                    setTimeout(() => {
+                      setResendStatus(false);
+                    }, 3000);
+                  }
+                }}
+              >
+                {resendStatus ? (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 20,
+                    }}
+                  >
+                    <SvgIcon svg="checkcircle" color={colors.text.success} />
                     <ThemeText
                       style={{
                         color: colors.text.success,
                       }}
-                    ></ThemeText>
-                  ) : (
-                    <ThemeText>Resend email</ThemeText>
-                  )}
-                </ThemePressable>
-              </ThemeView>
-            </View>
-          </SafeAreaView>
-        </ImageBackground>
+                    >
+                      Email sent
+                    </ThemeText>
+                  </View>
+                ) : (
+                  <ThemeText>Resend email</ThemeText>
+                )}
+              </ThemePressable>
+            </ThemeView>
+          </View>
+        </SafeAreaView>
       </ThemeView>
     </Pressable>
   );
