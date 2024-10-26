@@ -91,7 +91,15 @@ export default function EmailVerify() {
                 justifyContent: 'center',
               }}
             >
-              <Image source={require('@/assets/images/illustrations/verification-checkmark.svg')} />
+              <Image
+                source={require('@/assets/images/illustrations/verification-checkmark.png')}
+                style={{
+                  width: 200,
+                  height: 200,
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                }}
+              />
               <ThemeTitle
                 size="5xl"
                 bold
