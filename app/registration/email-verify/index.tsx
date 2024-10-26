@@ -22,6 +22,7 @@ import * as SecureStore from 'expo-secure-store';
 import { EXPO_PUBLIC_API_URL } from '@/util/env-variables';
 import { User } from '@/models/user';
 import { resendVerificationEmail } from '@/services/resendVerificationEmail.service';
+import { Image } from 'expo-image';
 
 async function getPreVerifiedUserFromSecureStore() {
   const user = await SecureStore.getItemAsync('user');
@@ -90,11 +91,13 @@ export default function EmailVerify() {
                 justifyContent: 'center',
               }}
             >
+              <Image source={require('@/assets/images/illustrations/verification-checkmark.svg')} />
               <ThemeTitle
                 size="5xl"
                 bold
                 style={{
-                  marginBottom: 4,
+                  marginTop: 40,
+                  marginBottom: 12,
 
                   color: theme === 'light' ? colors.text.heading : colors.text.brand,
                 }}
@@ -103,7 +106,7 @@ export default function EmailVerify() {
               </ThemeTitle>
               <ThemeText
                 style={{
-                  marginBottom: 24,
+                  marginBottom: 32,
                 }}
               >
                 We've sent you a verification email to{' '}
@@ -136,7 +139,8 @@ export default function EmailVerify() {
 
               <ThemeView
                 style={{
-                  marginTop: 16,
+                  marginTop: 32,
+                  marginBottom: 8,
                 }}
               >
                 <ThemeText

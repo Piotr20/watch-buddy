@@ -211,7 +211,7 @@ export default function SignIn() {
                   padding: 0,
                 }}
                 onPress={() => {
-                  router.push('/register');
+                  router.push('/registration');
                 }}
               >
                 <ThemeText

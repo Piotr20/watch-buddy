@@ -98,7 +98,7 @@ export default function Register() {
             })
           );
         }
-        router.push('/email-verify');
+        router.push('/registration/email-verify');
       } else {
         const errorData = await response.json();
         Alert.alert('Error', errorData.detail || 'Failed to register user');
@@ -284,7 +284,7 @@ export default function Register() {
                   padding: 0,
                 }}
                 onPress={() => {
-                  router.push('/email-verify');
+                  router.push('/registration/email-verify');
                 }}
               >
                 <ThemeText
