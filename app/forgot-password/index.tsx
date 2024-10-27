@@ -7,13 +7,14 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 import { User } from '@/models/user';
 import { getUserFromSecureStore } from '@/services/getUserFromSecureStore.service';
 import { resendRegisterVerificationEmail } from '@/services/resendRegisterVerificationEmail.service';
+import { resetPassword } from '@/services/resetPassword.service';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Dimensions, Keyboard, Pressable, useColorScheme, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function resetPassword() {
+export default function ResetPassword() {
   const colors = useThemeColor();
   const theme = useColorScheme();
   const [email, setEmail] = useState<string>('');
@@ -83,6 +84,7 @@ export default function resetPassword() {
             <View>
               <ThemeTextInput
                 label="Email"
+                autoCapitalize="none"
                 textContentType="emailAddress"
                 onChangeText={setEmail}
               />
@@ -90,8 +92,10 @@ export default function resetPassword() {
                 style={{
                   marginTop: 24,
                 }}
-                onPress={() => {
-                  router.replace('/sign-in');
+                onPress={async () => {
+                  await resetPassword(email);
+                  router.push('/forgot-password/email-verify');
+                  router.setParams({ email });
                 }}
               >
                 <ThemeText
@@ -103,63 +107,6 @@ export default function resetPassword() {
                 </ThemeText>
               </ThemePressable>
             </View>
-
-            <ThemeView
-              style={{
-                marginTop: 32,
-                marginBottom: 8,
-              }}
-            >
-              <ThemeText
-                style={{
-                  marginBottom: 8,
-                }}
-              >
-                Haven't received the email?
-              </ThemeText>
-              <ThemePressable
-                type="secondary"
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  ...(resendStatus && {
-                    borderColor: colors.text.success,
-                    pointerEvents: 'none',
-                  }),
-                }}
-                onPress={async () => {
-                  if (user?.email) {
-                    const status = await resendRegisterVerificationEmail(user?.email);
-                    setResendStatus(status);
-                    setTimeout(() => {
-                      setResendStatus(false);
-                    }, 3000);
-                  }
-                }}
-              >
-                {resendStatus ? (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: 20,
-                    }}
-                  >
-                    <SvgIcon svg="checkcircle" color={colors.text.success} />
-                    <ThemeText
-                      style={{
-                        color: colors.text.success,
-                      }}
-                    >
-                      Email sent
-                    </ThemeText>
-                  </View>
-                ) : (
-                  <ThemeText>Resend email</ThemeText>
-                )}
-              </ThemePressable>
-            </ThemeView>
           </View>
         </SafeAreaView>
       </ThemeView>

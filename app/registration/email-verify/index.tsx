@@ -8,7 +8,7 @@ import { User } from '@/models/user';
 import { getUserFromSecureStore } from '@/services/getUserFromSecureStore.service';
 import { resendRegisterVerificationEmail } from '@/services/resendRegisterVerificationEmail.service';
 import { Image } from 'expo-image';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Dimensions, Keyboard, Pressable, useColorScheme, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -16,16 +16,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function RegisterEmailVerify() {
   const colors = useThemeColor();
   const theme = useColorScheme();
-  const [user, setUser] = useState<User>();
   const [resendStatus, setResendStatus] = useState<boolean>(false);
 
+  const { email } = useLocalSearchParams<{ email: string }>();
   const windowHeight = Dimensions.get('window').height;
-
-  useEffect(() => {
-    getUserFromSecureStore().then((user) => {
-      setUser(user);
-    });
-  }, []);
 
   return (
     <Pressable
@@ -90,7 +84,7 @@ export default function RegisterEmailVerify() {
                   color: colors.text.brand,
                 }}
               >
-                {user?.email}
+                {email}
               </ThemeText>
               . Please verify your email to continue.
             </ThemeText>
@@ -136,13 +130,11 @@ export default function RegisterEmailVerify() {
                   }),
                 }}
                 onPress={async () => {
-                  if (user?.email) {
-                    const status = await resendRegisterVerificationEmail(user?.email);
-                    setResendStatus(status);
-                    setTimeout(() => {
-                      setResendStatus(false);
-                    }, 3000);
-                  }
+                  const status = await resendRegisterVerificationEmail(email);
+                  setResendStatus(status);
+                  setTimeout(() => {
+                    setResendStatus(false);
+                  }, 3000);
                 }}
               >
                 {resendStatus ? (

@@ -3,12 +3,12 @@ import * as SecureStore from 'expo-secure-store';
 
 export async function resetPassword(email: string) {
   try {
-    const csrftoken = await SecureStore.getItemAsync('csrftoken');
+    /*  const csrftoken = await SecureStore.getItemAsync('csrftoken'); */
     const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/auth/password/reset/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRFToken': csrftoken || '',
+        /*   'X-CSRFToken': csrftoken || '', */
       },
       body: JSON.stringify({ email }),
     });

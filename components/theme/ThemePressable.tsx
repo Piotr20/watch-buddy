@@ -1,14 +1,22 @@
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ReactNode, useState, useCallback } from 'react';
-import { Pressable, PressableProps, StyleSheet, ViewStyle } from 'react-native';
+import { Pressable, PressableProps, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { ThemeText } from './typography';
 
 type Props = PressableProps & {
-  type?: 'base' | 'secondary' | 'icon';
+  type?: 'base' | 'secondary' | 'text' | 'icon';
+  textStyle?: TextStyle;
   children: ReactNode;
 };
 
-export function ThemePressable({ type = 'base', children, disabled, style, ...rest }: Props) {
+export function ThemePressable({
+  type = 'base',
+  children,
+  disabled,
+  style,
+  textStyle,
+  ...rest
+}: Props) {
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const colors = useThemeColor();
 
@@ -47,30 +55,57 @@ export function ThemePressable({ type = 'base', children, disabled, style, ...re
     },
   });
 
-  return (
-    <Pressable
-      onPressIn={() => setIsPressed(true)}
-      onPressOut={() => setIsPressed(false)}
-      style={[
-        (type === 'base' || type === 'secondary') && buttonStyles.common,
-        buttonStyles[type],
-        disabled && buttonStyles.disabled,
-        style as ViewStyle,
-      ]}
-      {...rest}
-    >
-      {type === 'icon' ? (
-        children
-      ) : (
-        <ThemeText
-          style={{
-            textAlign: 'center',
-            color: type === 'secondary' ? colors.text.base : colors.text.inverse,
-          }}
+  switch (type) {
+    case 'text':
+      return (
+        <Pressable style={style} disabled={disabled} {...rest}>
+          <ThemeText
+            style={{
+              color: colors.text.base,
+              ...textStyle,
+            }}
+          >
+            {children}
+          </ThemeText>
+        </Pressable>
+      );
+    case 'icon':
+      return (
+        <Pressable
+          onPressIn={() => setIsPressed(true)}
+          onPressOut={() => setIsPressed(false)}
+          style={[buttonStyles.icon, disabled && buttonStyles.disabled, style as ViewStyle]}
+          disabled={disabled}
+          {...rest}
         >
           {children}
-        </ThemeText>
-      )}
-    </Pressable>
-  );
+        </Pressable>
+      );
+
+    default:
+      return (
+        <Pressable
+          onPressIn={() => setIsPressed(true)}
+          onPressOut={() => setIsPressed(false)}
+          style={[
+            buttonStyles.common,
+            buttonStyles[type],
+            disabled && buttonStyles.disabled,
+            style as ViewStyle,
+          ]}
+          disabled={disabled}
+          {...rest}
+        >
+          <ThemeText
+            style={{
+              textAlign: 'center',
+              color: type === 'secondary' ? colors.text.base : colors.text.inverse,
+              ...textStyle,
+            }}
+          >
+            {children}
+          </ThemeText>
+        </Pressable>
+      );
+  }
 }

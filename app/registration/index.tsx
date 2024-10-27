@@ -78,7 +78,6 @@ export default function Register() {
 
       if (response.ok) {
         const data = await response.json();
-
         console.log('Data:', data);
 
         if (data.access) {
@@ -98,6 +97,7 @@ export default function Register() {
             })
           );
         }
+        router.setParams({ email });
         router.push('/registration/email-verify');
       } else {
         const errorData = await response.json();
@@ -107,12 +107,6 @@ export default function Register() {
       Alert.alert('Error', (error as Error).message);
     }
   };
-
-  useEffect(() => {
-    console.log('email', email);
-    console.log('username', username);
-    console.log('password', password);
-  }, [email, username, password]);
 
   return (
     <Pressable
@@ -187,6 +181,7 @@ export default function Register() {
                 >
                   <ThemeTextInput
                     label="Email"
+                    autoCapitalize="none"
                     textContentType="emailAddress"
                     onChangeText={setEmail}
                   />
@@ -284,7 +279,7 @@ export default function Register() {
                   padding: 0,
                 }}
                 onPress={() => {
-                  router.push('/forgot-password');
+                  router.push('/sign-in');
                 }}
               >
                 <ThemeText

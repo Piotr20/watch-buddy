@@ -32,8 +32,7 @@ export function ThemeTextInput({ label, error, info, containerStyle, style, ...r
 
   const animStyles = useAnimatedStyle(() => {
     return {
-      top: isFocused || value ? withTiming(5, config) : withTiming(33, config),
-      paddingHorizontal: isFocused || value ? 4 : 0,
+      top: isFocused || value ? withTiming(8, config) : withTiming(18.5, config),
     };
   });
 
@@ -41,7 +40,6 @@ export function ThemeTextInput({ label, error, info, containerStyle, style, ...r
     <View>
       <View
         style={{
-          paddingTop: 5,
           position: 'relative',
           ...(containerStyle as ViewProps),
         }}
@@ -52,34 +50,35 @@ export function ThemeTextInput({ label, error, info, containerStyle, style, ...r
               position: 'absolute',
               zIndex: 1,
               left: 16,
-              transform: [{ translateY: -9.5 }],
               pointerEvents: 'none',
             },
             animStyles,
           ]}
         >
-          <ThemeText>{label}</ThemeText>
+          <ThemeText size={isFocused || value ? 'sm' : 'base'}>{label}</ThemeText>
         </Animated.View>
         <TextInput
           style={{
             ...(Platform.OS === 'web' && ({ outlineStyle: 'none' } as any)),
             fontFamily: 'Rubik',
+            fontSize: 16,
+            lineHeight: 19,
             backgroundColor: colors.background.inner,
             color: colors.text.details,
             borderColor: isFocused
               ? colors.border.info
               : error
               ? colors.border.danger
-              : colors.border.base,
+              : colors.border.inverse,
             borderWidth: 1,
-            padding: 16,
             textAlign: 'left',
-            lineHeight: 22,
             letterSpacing: 0,
-            fontSize: 16,
             fontWeight: '500',
             borderRadius: 10,
             borderStyle: 'solid',
+            paddingHorizontal: 16,
+            paddingTop: 29,
+            paddingBottom: 8,
             ...(style as TextStyle),
           }}
           onFocus={() => {

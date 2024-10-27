@@ -118,7 +118,11 @@ export default function SignIn() {
                     marginBottom: 16,
                   }}
                 >
-                  <ThemeTextInput label="Email" textContentType="emailAddress" />
+                  <ThemeTextInput
+                    label="Email"
+                    autoCapitalize="none"
+                    textContentType="emailAddress"
+                  />
                 </View>
                 <View
                   style={{
@@ -142,6 +146,17 @@ export default function SignIn() {
                   >
                     Sign In
                   </ThemeText>
+                </ThemePressable>
+                <ThemePressable
+                  style={{
+                    marginTop: 16,
+                  }}
+                  type="text"
+                  onPress={() => {
+                    router.push('/forgot-password');
+                  }}
+                >
+                  Forgot password?
                 </ThemePressable>
               </View>
 
@@ -204,7 +219,7 @@ export default function SignIn() {
                 gap: 4,
               }}
             >
-              <ThemeText>Don’t have an account yet?</ThemeText>
+              <ThemeText>Don't have an account yet?</ThemeText>
               <ThemePressable
                 type="icon"
                 style={{
