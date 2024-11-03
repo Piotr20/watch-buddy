@@ -15,16 +15,12 @@ export function CarouselItem({ type = 'movie', heading, subheading, imgSrc }:Pro
 
   const ItemStyles = StyleSheet.create({
     common: {
-      paddingVertical: 2,
-      paddingHorizontal: 4,
-      borderRadius: 8,
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderWidth: 1, 
-      borderColor: 'transparent',
-      gap: 4,
+      width: '100%',
+      ...(type === 'movie' ? { 
+        maxWidth: 150,
+        } : { 
+          maxWidth: 120,
+      })
     },
     image: {
         objectFit: 'cover',
@@ -56,14 +52,7 @@ export function CarouselItem({ type = 'movie', heading, subheading, imgSrc }:Pro
   });
 
   return (
-    <View style={{
-      width: '100%',
-      ...(type === 'movie' ? { 
-        maxWidth: 150,
-        } : { 
-          maxWidth: 120,
-        })
-    }}>
+    <View style={ItemStyles.common}>
         <Image style={ItemStyles.image} source={{
           uri: imgSrc,
         }}/> 
