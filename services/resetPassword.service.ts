@@ -14,6 +14,7 @@ export async function resetPassword(email: string) {
     });
 
     if (response.ok) {
+      const data = await response.json();
       return true;
     } else {
       throw new Error('Failed to reset password');

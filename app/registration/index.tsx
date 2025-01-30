@@ -39,6 +39,7 @@ export default function Register() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
         body: JSON.stringify({
           username: username,
@@ -97,9 +98,12 @@ export default function Register() {
             })
           );
         }
-        router.setParams({ email });
-        router.push('/registration/email-verify');
+        router.push({
+          pathname: '/registration/email-verify',
+          params: { email: email },
+        });
       } else {
+        console.log('Error:', response);
         const errorData = await response.json();
         Alert.alert('Error', errorData.detail || 'Failed to register user');
       }

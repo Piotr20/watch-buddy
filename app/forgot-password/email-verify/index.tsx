@@ -70,14 +70,14 @@ export default function ForgotPasswordEmailVerify() {
                 marginBottom: 12,
               }}
             >
-              We've sent you a verification email!
+              We've sent you a reset password email!
             </ThemeTitle>
             <ThemeText
               style={{
                 marginBottom: 32,
               }}
             >
-              We've sent you a verification email to{' '}
+              We've sent you a reset password email! to{' '}
               <ThemeText
                 bold
                 style={{
@@ -86,7 +86,7 @@ export default function ForgotPasswordEmailVerify() {
               >
                 {email}
               </ThemeText>
-              . Please verify your email to continue.
+              . Please, check your inbox.
             </ThemeText>
 
             <View>

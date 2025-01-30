@@ -30,24 +30,71 @@ export default function SignIn() {
 
   const windowHeight = Dimensions.get('window').height;
 
-  const handleLogin = async () => {
+  const loginUser = async () => {
     try {
       const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/auth/login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
       });
+
+      // Extract cookies from response headers
+      const cookies = response.headers.get('set-cookie');
+      if (cookies) {
+        const cookieArray = cookies.split(', ');
+        const cookieMap: { [key: string]: string } = {};
+
+        cookieArray.forEach((cookie) => {
+          const [nameValue, ...attributes] = cookie.split(';');
+          if (nameValue) {
+            const [name, value] = nameValue.split('=');
+            if (name && value) {
+              cookieMap[name.trim()] = value.trim();
+            }
+          }
+        });
+
+        console.log('Cookies:', cookieMap);
+
+        // Store relevant cookies in SecureStore
+        if (cookieMap['_auth']) await SecureStore.setItemAsync('auth_token', cookieMap['_auth']);
+        if (cookieMap['refresh_token'])
+          await SecureStore.setItemAsync('refresh_token', cookieMap['refresh_token']);
+        if (cookieMap['csrftoken'])
+          await SecureStore.setItemAsync('csrftoken', cookieMap['csrftoken']);
+        if (cookieMap['sessionid'])
+          await SecureStore.setItemAsync('sessionid', cookieMap['sessionid']);
+      }
 
       if (response.ok) {
         const data = await response.json();
-        await SecureStore.setItemAsync('token', data.token);
-        Alert.alert('Success', 'User logged in successfully');
-        // Store the token or handle the authenticated user
+        console.log('Data:', data);
+
+        if (data.access) {
+          await SecureStore.setItemAsync('access_token', data.access);
+        }
+        if (data.refresh) {
+          await SecureStore.setItemAsync('refresh_token', data.refresh);
+        }
+        if (data.user) {
+          await SecureStore.setItemAsync(
+            'user',
+            JSON.stringify({
+              email: data.user.email,
+              username: data.user.username,
+              first_name: data.user.first_name,
+              last_name: data.user.last_name,
+            })
+          );
+        }
       } else {
         const errorData = await response.json();
-        Alert.alert('Error', errorData.detail || 'Failed to log in');
+        Alert.alert('Error', errorData.detail || 'Failed to register user');
       }
     } catch (error) {
       Alert.alert('Error', (error as Error).message);
@@ -122,6 +169,7 @@ export default function SignIn() {
                     label="Email"
                     autoCapitalize="none"
                     textContentType="emailAddress"
+                    onChangeText={setEmail}
                   />
                 </View>
                 <View
@@ -129,14 +177,17 @@ export default function SignIn() {
                     marginBottom: 24,
                   }}
                 >
-                  <ThemeTextInput label="Password" textContentType="password" secureTextEntry />
+                  <ThemeTextInput
+                    label="Password"
+                    textContentType="password"
+                    secureTextEntry
+                    onChangeText={setPassword}
+                  />
                 </View>
                 <ThemePressable
-                  onPress={() => {
-                    signIn();
-                    // Navigate after signing in. You may want to tweak this to ensure sign-in is
-                    // successful before navigating.
-                    router.replace('/');
+                  onPress={async () => {
+                    await loginUser();
+                    router.push('/(auth)');
                   }}
                 >
                   <ThemeText

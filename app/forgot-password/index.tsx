@@ -18,16 +18,8 @@ export default function ResetPassword() {
   const colors = useThemeColor();
   const theme = useColorScheme();
   const [email, setEmail] = useState<string>('');
-  const [user, setUser] = useState<User>();
-  const [resendStatus, setResendStatus] = useState<boolean>(false);
 
   const windowHeight = Dimensions.get('window').height;
-
-  useEffect(() => {
-    getUserFromSecureStore().then((user) => {
-      setUser(user);
-    });
-  }, []);
 
   return (
     <Pressable
@@ -94,8 +86,10 @@ export default function ResetPassword() {
                 }}
                 onPress={async () => {
                   await resetPassword(email);
-                  router.push('/forgot-password/email-verify');
-                  router.setParams({ email });
+                  router.push({
+                    pathname: '/forgot-password/email-verify',
+                    params: { email: email },
+                  });
                 }}
               >
                 <ThemeText
